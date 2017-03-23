@@ -9,6 +9,20 @@ def apkSuffix = versionMajor + '.' + versionMinor + '.' + versionPatch;
 def projectName = "meetings"
 
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'com.google.firebase.firebase-crash'
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://maven.fabric.io/public'
+    }
+
+    maven {
+        url "https://s3.amazonaws.com/repo.commonsware.com"
+    }
+}
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
@@ -18,13 +32,14 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
-        applicationId "mobifirst.in.meetings"
+        applicationId "in.mobifirst.meetings"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}-${gitBranchName}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "STORAGE_REF", "\"gs://tagtree-4ef29.appspot.com\"")
+        buildConfigField("String", "STORAGE_REF", "\"gs://todofirebaseproject-c3fce.appspot.com\"")
+        buildConfigField("String", "SMS91_SECRET", "\"128441AGQNt0b0eb2q580367e2\"")
     }
 
     signingConfigs {
@@ -50,7 +65,7 @@ android {
             signingConfig signingConfigs.release
         }
         debug {
-            applicationIdSuffix ".dev"
+//            applicationIdSuffix ".dev"
             signingConfig signingConfigs.debug
         }
     }
@@ -65,6 +80,13 @@ android {
             }
         }
     }
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java', 'src/meetings/java']
+            res.srcDirs = ['src/main/res', 'src/meetings/res']
+            manifest.srcFile 'src/meetings/AndroidManifest.xml'
+        }
+    }
 }
 
 dependencies {
@@ -72,6 +94,37 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
+    compile "com.android.support:design:$rootProject.supportLibraryVersion"
+    compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
     compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+    compile "com.android.support:preference-v7:$rootProject.supportLibraryVersion"
+    compile "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
+
+    compile "com.android.support:multidex:$rootProject.multidexVersion"
+
+    compile "com.google.android.gms:play-services-auth:$rootProject.firebaseVersion"
+
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
+        transitive = true;
+    }
+    compile "com.google.firebase:firebase-database:$rootProject.firebaseVersion"
+    compile "com.google.firebase:firebase-core:$rootProject.firebaseVersion"
+    compile "com.google.firebase:firebase-auth:$rootProject.firebaseVersion"
+    compile "com.google.firebase:firebase-storage:$rootProject.firebaseVersion"
+    compile "com.google.firebase:firebase-crash:$rootProject.firebaseVersion"
+
+    compile "com.google.dagger:dagger:$rootProject.daggerVersion"
+    apt "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
+
+    compile "io.reactivex:rxjava:$rootProject.rxjavaVersion"
+    compile "io.reactivex:rxandroid:$rootProject.rxandroidVersion"
+
+    compile "com.github.bumptech.glide:glide:$rootProject.glideVersion"
+
+    compile 'com.commonsware.cwac:presentation:0.4.6'
+
     testCompile 'junit:junit:4.12'
 }
+
+apply plugin: 'com.google.gms.google-services'

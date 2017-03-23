@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "531436535706",
+    "firebase_url": "https://todofirebaseproject-c3fce.firebaseio.com",
+    "project_id": "todofirebaseproject-c3fce",
+    "storage_bucket": "todofirebaseproject-c3fce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:531436535706:android:fb3c0879d110e0df",
+        "android_client_info": {
+          "package_name": "in.mobifirst.meetings"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "531436535706-576f92fhq5gmbtbqe9svhm1311gqku9s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "in.mobifirst.meetings",
+            "certificate_hash": "87562ddbbb724c4397082ea1e8f9d17e4158fab5"
+          }
+        },
+        {
+          "client_id": "531436535706-acefetuvbgjv41puau2qjufngt84vcic.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1S03kjaE4TaWSFZQzuOZ_qdX9jxzIdQ8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "531436535706-acefetuvbgjv41puau2qjufngt84vcic.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
