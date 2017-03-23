@@ -19,4 +19,12 @@
     <string name="rejected_permission_read_phonestate">READ_PHONE_STATE permission rejected.</string>
     <string name="use_my_phone_number">Use My Phone Number</string>
     <string name="no_network">Please check your network and try again.</string>
+    <string name="description_hint">Add a small description</string>
+    <string name="from_time">Start Time</string>
+    <string name="to_time">End Time</string>
+    <string name="invalid_title">Kindly enter a proper title</string>
+    <string name="invalid_description">Enter proper description</string>
+    <string name="invalid_hour">Start time should be before End time.</string>
+    <string name="invalid_minute">Start time cannot be same as End time</string>
+    <string name="meetings">Today\'s Agenda</string>
 </resources>

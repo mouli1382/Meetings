@@ -140,35 +140,35 @@ public class TokensFragment extends BaseFragment implements TokensContract.View 
                 (FloatingActionButton) getActivity().findViewById(R.id.fab);
         fab.setVisibility(View.GONE);
 
-        int numberOfCounters = mIQSharedPreferences.getInt(ApplicationConstants.NUMBER_OF_COUNTERS_KEY);
-
-        mCounterSpinner = (Spinner) getActivity().findViewById(R.id.counter_spinner);
-        if (numberOfCounters > 1) {
-            // Create an ArrayAdapter using the string array and a default spinner layout
-            String[] items = new String[numberOfCounters];
-            for (int i = 0; i < numberOfCounters; i++) {
-                items[i] = "Counter-" + (i + 1);
-            }
-            final ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items);
-            // Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            // Apply the adapter to the spinner
-            mCounterSpinner.setAdapter(adapter);
-            mCounterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    filterTokensByCounter(i);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-
-                }
-            });
-            mCounterSpinner.setVisibility(View.VISIBLE);
-        } else {
-            mCounterSpinner.setVisibility(View.GONE);
-        }
+//        int numberOfCounters = mIQSharedPreferences.getInt(ApplicationConstants.NUMBER_OF_COUNTERS_KEY);
+//
+//        mCounterSpinner = (Spinner) getActivity().findViewById(R.id.counter_spinner);
+//        if (numberOfCounters > 1) {
+//            // Create an ArrayAdapter using the string array and a default spinner layout
+//            String[] items = new String[numberOfCounters];
+//            for (int i = 0; i < numberOfCounters; i++) {
+//                items[i] = "Counter-" + (i + 1);
+//            }
+//            final ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items);
+//            // Specify the layout to use when the list of choices appears
+//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//            // Apply the adapter to the spinner
+//            mCounterSpinner.setAdapter(adapter);
+//            mCounterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//                @Override
+//                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                    filterTokensByCounter(i);
+//                }
+//
+//                @Override
+//                public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//                }
+//            });
+//            mCounterSpinner.setVisibility(View.VISIBLE);
+//        } else {
+//            mCounterSpinner.setVisibility(View.GONE);
+//        }
     }
 
     @Nullable

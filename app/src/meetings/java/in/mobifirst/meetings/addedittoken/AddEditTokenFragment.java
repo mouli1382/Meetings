@@ -1,6 +1,8 @@
 package in.mobifirst.meetings.addedittoken;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,17 +13,16 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
-import android.util.Patterns;
-import android.view.KeyEvent;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.TimePicker;
+
+import java.util.Calendar;
 
 import javax.inject.Inject;
 
@@ -30,7 +31,6 @@ import in.mobifirst.meetings.application.IQStoreApplication;
 import in.mobifirst.meetings.fragment.BaseFragment;
 import in.mobifirst.meetings.preferences.IQSharedPreferences;
 import in.mobifirst.meetings.receiver.TTLocalBroadcastManager;
-import in.mobifirst.meetings.util.ApplicationConstants;
 import in.mobifirst.meetings.util.NetworkConnectionUtils;
 
 
@@ -44,10 +44,22 @@ public class AddEditTokenFragment extends BaseFragment implements AddEditTokenCo
     @Inject
     protected NetworkConnectionUtils mNetworkConnectionUtils;
 
-    private TextInputLayout mPhoneNumberInputLayout;
-    private TextInputEditText mPhoneNumberEditText;
-    private Spinner mCounterSpinner;
-    private int mNumberOfCounters;
+    private TextInputLayout mTitleInputLayout;
+    private TextInputEditText mTitleEditText;
+    private TextInputLayout mDescriptionInputLayout;
+    private TextInputEditText mDescriptionEditText;
+
+    private Button mStartTimeButton;
+    private Button mEndTimeButton;
+
+    private int mStartHour;
+    private int mEndHour;
+
+    private int mStartMinute;
+    private int mEndMinute;
+
+    private long mStartTime;
+    private long mEndTime;
 
     public static AddEditTokenFragment newInstance() {
         return new AddEditTokenFragment();
@@ -106,79 +118,128 @@ public class AddEditTokenFragment extends BaseFragment implements AddEditTokenCo
                 if (mNetworkConnectionUtils.isConnected()) {
                     if (validateInput()) {
                         //ToDo hardcoding to IND country code as of now.
-                        mPresenter.addNewToken("+91" + mPhoneNumberEditText.getText().toString(),
-                                mNumberOfCounters > 1 ? (mCounterSpinner.getSelectedItemPosition() + 1): 1);
+//                        mPresenter.addNewToken("+91" + mTitleEditText.getText().toString(),
+//                                mNumberOfCounters > 1 ? (mCounterSpinner.getSelectedItemPosition() + 1) : 1);
                     }
                 }
             }
         });
+    }
+
+    public static class TimePickerFragment extends DialogFragment
+            implements TimePickerDialog.OnTimeSetListener {
+        private ITimePickerCallback iTimePickerCallback;
+
+        interface ITimePickerCallback {
+            void onTimerSet(int hourOfDay, int minute);
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current time as the default values for the picker
+            final Calendar c = Calendar.getInstance();
+            int hour = c.get(Calendar.HOUR_OF_DAY);
+            int minute = c.get(Calendar.MINUTE);
+
+            // Create a new instance of TimePickerDialog and return it
+            return new TimePickerDialog(getActivity(), this, hour, minute,
+                    DateFormat.is24HourFormat(getActivity()));
+        }
+
+        public void setiTimePickerCallback(ITimePickerCallback iTimePickerCallback) {
+            this.iTimePickerCallback = iTimePickerCallback;
+        }
+
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            iTimePickerCallback.onTimerSet(hourOfDay, minute);
+        }
+    }
+
+    public void showTimePickerDialog(final View v, final boolean isStartTime) {
+        TimePickerFragment timePickerFragment = new TimePickerFragment();
+        timePickerFragment.setiTimePickerCallback(new TimePickerFragment.ITimePickerCallback() {
+            @Override
+            public void onTimerSet(int hourOfDay, int minute) {
+                final Calendar c = Calendar.getInstance();
+                c.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                c.set(Calendar.MINUTE, minute);
+                if (isStartTime) {
+                    mStartHour = hourOfDay;
+                    mStartMinute = minute;
+                    mStartTime = c.getTimeInMillis();
+                } else {
+                    mEndHour = hourOfDay;
+                    mEndMinute = minute;
+                    mEndTime = c.getTimeInMillis();
+                }
+                ((Button) v).setText(hourOfDay + ":" + minute);
+            }
+        });
+        timePickerFragment.show(getActivity().getSupportFragmentManager(), ((Button) v).getText().toString());
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_addtoken, container, false);
-        mPhoneNumberEditText = (TextInputEditText) root.findViewById(R.id.add_phone_number);
-        mPhoneNumberInputLayout = (TextInputLayout) root.findViewById(R.id.phoneNumberInputLayout);
+        View root = inflater.inflate(R.layout.fragment_addmeeting, container, false);
 
-        mPhoneNumberEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mTitleEditText = (TextInputEditText) root.findViewById(R.id.titleInputEditText);
+        mTitleInputLayout = (TextInputLayout) root.findViewById(R.id.titleInputLayout);
+
+        mDescriptionEditText = (TextInputEditText) root.findViewById(R.id.descriptionInputEditText);
+        mDescriptionInputLayout = (TextInputLayout) root.findViewById(R.id.descriptionInputLayout);
+
+        mStartTimeButton = (Button) root.findViewById(R.id.startTime);
+        mStartTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_NEXT || actionId == EditorInfo.IME_ACTION_DONE) {
-                    CharSequence phone = mPhoneNumberEditText.getText();
-                    if (TextUtils.isEmpty(phone)) {
-                        mPhoneNumberInputLayout.setError(getString(R.string.invalid_phone_number));
-                    } else if (!Patterns.PHONE.matcher(phone).matches()) {
-                        mPhoneNumberInputLayout.setError(getString(R.string.invalid_phone_number));
-                    } else {
-                        mPhoneNumberInputLayout.setError("");
-                    }
-                }
-                return true;
+            public void onClick(View v) {
+                showTimePickerDialog(v, true);
             }
         });
 
-        mNumberOfCounters = iqSharedPreferences.getInt(ApplicationConstants.NUMBER_OF_COUNTERS_KEY);
-
-        mCounterSpinner = (Spinner) root.findViewById(R.id.counter_spinner);
-        if (mNumberOfCounters > 1) {
-            // Create an ArrayAdapter using the string array and a default spinner layout
-            String[] items = new String[mNumberOfCounters];
-            for (int i = 0; i < mNumberOfCounters; i++) {
-                items[i] = "Counter-" + (i + 1);
+        mEndTimeButton = (Button) root.findViewById(R.id.endTime);
+        mEndTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimePickerDialog(v, false);
             }
-            final ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items);
-            // Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            // Apply the adapter to the spinner
-            mCounterSpinner.setAdapter(adapter);
-            mCounterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    String counter = adapter.getItem(i);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-
-                }
-            });
-        } else {
-            mCounterSpinner.setVisibility(View.GONE);
-        }
+        });
 
         setRetainInstance(true);
         return root;
     }
 
     private boolean validateInput() {
-        CharSequence phone = mPhoneNumberEditText.getText();
-        if (TextUtils.isEmpty(phone) || phone.toString().length() != 10) {
-            mPhoneNumberInputLayout.setError(getString(R.string.invalid_phone_number));
+        CharSequence title = mTitleEditText.getText();
+        if (TextUtils.isEmpty(title)) {
+            mTitleInputLayout.setError(getString(R.string.invalid_title));
             return false;
         } else {
-            mPhoneNumberInputLayout.setError("");
+            mTitleInputLayout.setError("");
+        }
+
+        CharSequence description = mDescriptionEditText.getText();
+        if (TextUtils.isEmpty(description)) {
+            mDescriptionInputLayout.setError(getString(R.string.invalid_description));
+            return false;
+        } else {
+            mDescriptionInputLayout.setError("");
+        }
+
+        if (mStartHour == 0 || mEndHour == 0 || mStartHour > mEndHour) {
+            Snackbar.make(getView(), getString(R.string.invalid_hour), Snackbar.LENGTH_LONG).show();
+            return false;
+        }
+
+        if (mStartHour == mEndHour && (mStartMinute == mEndMinute)) {
+            Snackbar.make(getView(), getString(R.string.invalid_minute), Snackbar.LENGTH_LONG).show();
+            return false;
+        }
+
+        if (mStartHour == mEndHour && (mStartMinute > mEndMinute)) {
+            Snackbar.make(getView(), getString(R.string.invalid_hour), Snackbar.LENGTH_LONG).show();
+            return false;
         }
 
         return true;

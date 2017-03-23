@@ -43,15 +43,15 @@
     <string name="nav_active">Active</string>
     <string name="nav_completed">Completed</string>
     <string name="nav_cancelled">Cancelled</string>
-    <string name="label_all">All Tokens</string>
-    <string name="label_active">Active Tokens</string>
-    <string name="label_completed">Completed Tokens</string>
-    <string name="label_cancelled">Cancelled Tokens</string>
-    <string name="no_tokens_all">You have no Tokens!</string>
-    <string name="no_tokens_active">You have no active Tokens!</string>
-    <string name="no_tokens_completed">You have no completed Tokens!</string>
-    <string name="no_tokens_cancelled">You have no cancelled Tokens!</string>
-    <string name="no_tokens_add">Add a Token item +</string>
+    <string name="label_all">All Meetings</string>
+    <string name="label_active">Active Meetings</string>
+    <string name="label_completed">Completed Meetings</string>
+    <string name="label_cancelled">Cancelled Meetings</string>
+    <string name="no_tokens_all">You have no Meetings!</string>
+    <string name="no_tokens_active">You have no active Meetings!</string>
+    <string name="no_tokens_completed">You have no completed Meetings!</string>
+    <string name="no_tokens_cancelled">You have no cancelled Meetings!</string>
+    <string name="no_tokens_add">Scedule a Meeting +</string>
     <string name="refresh">Refresh</string>
     <string name="title_activity_custom_fields">CustomFields</string>
 
@@ -79,7 +79,7 @@
     <string name="upload">UPLOAD</string>
     <string name="empty_store_counters">Empty Counters</string>
     <string name="invalid_store_counters">Enter between 1 - 100</string>
-    <string name="issue_token">Issue Token</string>
+    <string name="issue_token">Schedule a Meeting</string>
     <string name="failed_fetch_store">Fetching Store details failed. Try again!</string>
     <string name="title_activity_navigation_drawer">NavigationDrawerActivity</string>
 

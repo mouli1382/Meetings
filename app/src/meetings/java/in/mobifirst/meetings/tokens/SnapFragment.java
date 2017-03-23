@@ -145,8 +145,8 @@ public class SnapFragment extends BaseFragment implements TokensContract.View {
         fab.setVisibility(View.VISIBLE);
 
 
-        Spinner spinner = (Spinner) getActivity().findViewById(R.id.counter_spinner);
-        spinner.setVisibility(View.GONE);
+//        Spinner spinner = (Spinner) getActivity().findViewById(R.id.counter_spinner);
+//        spinner.setVisibility(View.GONE);
     }
 
     @Nullable

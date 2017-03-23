@@ -3,11 +3,9 @@ package in.mobifirst.meetings.tokens;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.SwitchCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.CompoundButton;
-import android.widget.FrameLayout;
 
 import javax.inject.Inject;
 
@@ -37,54 +35,68 @@ public class TokensActivity extends BaseDrawerActivity {
         // Set up the toolbar.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle("");
+        ActionBar actionBar = getSupportActionBar();
 
-        SwitchCompat flow = (SwitchCompat) findViewById(R.id.switchCompat);
-        flow.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean issueFlow) {
-                if (compoundButton.getId() == R.id.switchCompat) {
-                    if (!issueFlow) {
-                        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.content_base_drawer);
-                        frameLayout.removeAllViewsInLayout();
-                        SnapFragment snapFragment = SnapFragment.newInstance();
-                        ActivityUtilities.replaceFragmentToActivity(
-                                getSupportFragmentManager(), snapFragment, R.id.content_base_drawer);
-
-                        // Create the presenter
-                        DaggerTokensComponent.builder()
-                                .applicationComponent(((IQStoreApplication) getApplication()).getApplicationComponent())
-                                .tokensPresenterModule(new TokensPresenterModule(snapFragment)).build()
-                                .inject(TokensActivity.this);
-                    } else {
-                        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.content_base_drawer);
-                        frameLayout.removeAllViewsInLayout();
-                        TokensFragment tokensFragment = TokensFragment.newInstance();
-                        ActivityUtilities.replaceFragmentToActivity(
-                                getSupportFragmentManager(), tokensFragment, R.id.content_base_drawer);
-
-                        // Create the presenter
-                        DaggerTokensComponent.builder()
-                                .applicationComponent(((IQStoreApplication) getApplication()).getApplicationComponent())
-                                .tokensPresenterModule(new TokensPresenterModule(tokensFragment)).build()
-                                .inject(TokensActivity.this);
-                    }
-                }
-            }
-        });
-        if (!flow.isChecked()) {
-            FrameLayout frameLayout = (FrameLayout) findViewById(R.id.content_base_drawer);
-            frameLayout.removeAllViewsInLayout();
-            SnapFragment snapFragment = SnapFragment.newInstance();
+        SnapFragment snapFragment = (SnapFragment) getSupportFragmentManager().findFragmentById(R.id.content_base_drawer);
+        if (snapFragment == null) {
+            snapFragment = SnapFragment.newInstance();
+            actionBar.setTitle(R.string.meetings);
             ActivityUtilities.replaceFragmentToActivity(
                     getSupportFragmentManager(), snapFragment, R.id.content_base_drawer);
-
-            // Create the presenter
-            DaggerTokensComponent.builder()
-                    .applicationComponent(((IQStoreApplication) getApplication()).getApplicationComponent())
-                    .tokensPresenterModule(new TokensPresenterModule(snapFragment)).build()
-                    .inject(TokensActivity.this);
         }
+
+        // Create the presenter
+        DaggerTokensComponent.builder()
+                .applicationComponent(((IQStoreApplication) getApplication()).getApplicationComponent())
+                .tokensPresenterModule(new TokensPresenterModule(snapFragment)).build()
+                .inject(TokensActivity.this);
+
+//        SwitchCompat flow = (SwitchCompat) findViewById(R.id.switchCompat);
+//        flow.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean issueFlow) {
+//                if (compoundButton.getId() == R.id.switchCompat) {
+//                    if (!issueFlow) {
+//                        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.content_base_drawer);
+//                        frameLayout.removeAllViewsInLayout();
+//                        SnapFragment snapFragment = SnapFragment.newInstance();
+//                        ActivityUtilities.replaceFragmentToActivity(
+//                                getSupportFragmentManager(), snapFragment, R.id.content_base_drawer);
+//
+//                        // Create the presenter
+//                        DaggerTokensComponent.builder()
+//                                .applicationComponent(((IQStoreApplication) getApplication()).getApplicationComponent())
+//                                .tokensPresenterModule(new TokensPresenterModule(snapFragment)).build()
+//                                .inject(TokensActivity.this);
+//                    } else {
+//                        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.content_base_drawer);
+//                        frameLayout.removeAllViewsInLayout();
+//                        TokensFragment tokensFragment = TokensFragment.newInstance();
+//                        ActivityUtilities.replaceFragmentToActivity(
+//                                getSupportFragmentManager(), tokensFragment, R.id.content_base_drawer);
+//
+//                        // Create the presenter
+//                        DaggerTokensComponent.builder()
+//                                .applicationComponent(((IQStoreApplication) getApplication()).getApplicationComponent())
+//                                .tokensPresenterModule(new TokensPresenterModule(tokensFragment)).build()
+//                                .inject(TokensActivity.this);
+//                    }
+//                }
+//            }
+//        });
+//        if (!flow.isChecked()) {
+//            FrameLayout frameLayout = (FrameLayout) findViewById(R.id.content_base_drawer);
+//            frameLayout.removeAllViewsInLayout();
+//            SnapFragment snapFragment = SnapFragment.newInstance();
+//            ActivityUtilities.replaceFragmentToActivity(
+//                    getSupportFragmentManager(), snapFragment, R.id.content_base_drawer);
+//
+//            // Create the presenter
+//            DaggerTokensComponent.builder()
+//                    .applicationComponent(((IQStoreApplication) getApplication()).getApplicationComponent())
+//                    .tokensPresenterModule(new TokensPresenterModule(snapFragment)).build()
+//                    .inject(TokensActivity.this);
+//        }
 
         // Load previously saved state, if available.
         if (savedInstanceState != null) {
