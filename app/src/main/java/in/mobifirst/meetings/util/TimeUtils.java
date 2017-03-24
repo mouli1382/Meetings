@@ -15,6 +15,11 @@ public class TimeUtils {
         return sfd.format(new Date(timestamp));
     }
 
+    public static String getHourMinute(long timestamp) {
+        SimpleDateFormat sfd = new SimpleDateFormat("HH:mm");
+        return sfd.format(new Date(timestamp));
+    }
+
     public static String getDateTime(long timestamp) {
         SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         return sfd.format(new Date(timestamp));

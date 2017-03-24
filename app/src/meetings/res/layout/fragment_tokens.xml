@@ -21,11 +21,8 @@
                 android:id="@+id/filteringLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:layout_marginLeft="@dimen/list_item_padding"
-                android:layout_marginRight="@dimen/list_item_padding"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:gravity="center_vertical"
+                android:text=""
                 android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                 <android.support.v7.widget.RecyclerView

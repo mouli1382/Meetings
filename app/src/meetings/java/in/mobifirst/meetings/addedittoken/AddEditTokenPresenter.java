@@ -5,8 +5,8 @@ import android.support.annotation.Nullable;
 
 import javax.inject.Inject;
 
-import in.mobifirst.meetings.token.TokensRepository;
 import in.mobifirst.meetings.model.Token;
+import in.mobifirst.meetings.token.TokensRepository;
 import rx.Subscriber;
 import rx.subscriptions.CompositeSubscription;
 
@@ -52,36 +52,40 @@ public class AddEditTokenPresenter implements AddEditTokenContract.Presenter {
     }
 
     @Override
-    public void addNewToken(String phoneNumber, int counterNumber) {
+    public void addNewMeeting(String title, String description, long startTime, long endTime) {
         Token token = new Token();
-        token.setPhoneNumber(phoneNumber);
-        token.setCounter(counterNumber);
+        token.setTitle(title);
+        token.setDescription(description);
+        token.setStartTime(startTime);
+        token.setEndTime(endTime);
+        token.setStatus(Token.Status.ISSUED.ordinal());
+        token.setBuzzCount(0);
         saveToken(token);
     }
 
     private void saveToken(@NonNull Token token) {
-        if (token.isEmpty()) {
-            mAddTokenView.showEmptyTokenError();
-        } else {
-            mTokensRepository.addNewToken(token, new Subscriber<String>() {
-                @Override
-                public void onCompleted() {
-                    mAddTokenView.showTokensList();
-                }
+//        if (token.isEmpty()) {
+//            mAddTokenView.showEmptyTokenError();
+//        } else {
+        mTokensRepository.addNewToken(token, new Subscriber<String>() {
+            @Override
+            public void onCompleted() {
+                mAddTokenView.showTokensList();
+            }
 
-                @Override
-                public void onError(Throwable e) {
-                    if (mAddTokenView.isActive()) {
-                        mAddTokenView.showEmptyTokenError();
-                    }
+            @Override
+            public void onError(Throwable e) {
+                if (mAddTokenView.isActive()) {
+                    mAddTokenView.showEmptyTokenError();
                 }
+            }
 
-                @Override
-                public void onNext(String result) {
-                }
-            });
+            @Override
+            public void onNext(String result) {
+            }
+        });
 
-        }
+//        }
     }
 
 //    @Override

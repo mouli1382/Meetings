@@ -102,7 +102,7 @@ public class BaseDrawerActivity extends BaseActivity
             SettingsActivity.start(BaseDrawerActivity.this);
         } else if (id == R.id.nav_settings) {
             //Launch local config screen
-            PrefsActivity.start(BaseDrawerActivity.this);
+//            PrefsActivity.start(BaseDrawerActivity.this);
         } else if (id == R.id.nav_help) {
             //ToDo Handle Help here.
         }

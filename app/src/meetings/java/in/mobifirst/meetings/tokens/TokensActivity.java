@@ -37,18 +37,18 @@ public class TokensActivity extends BaseDrawerActivity {
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
 
-        SnapFragment snapFragment = (SnapFragment) getSupportFragmentManager().findFragmentById(R.id.content_base_drawer);
-        if (snapFragment == null) {
-            snapFragment = SnapFragment.newInstance();
+        TokensFragment tokensFragment = (TokensFragment) getSupportFragmentManager().findFragmentById(R.id.content_base_drawer);
+        if (tokensFragment == null) {
+            tokensFragment = TokensFragment.newInstance();
             actionBar.setTitle(R.string.meetings);
             ActivityUtilities.replaceFragmentToActivity(
-                    getSupportFragmentManager(), snapFragment, R.id.content_base_drawer);
+                    getSupportFragmentManager(), tokensFragment, R.id.content_base_drawer);
         }
 
         // Create the presenter
         DaggerTokensComponent.builder()
                 .applicationComponent(((IQStoreApplication) getApplication()).getApplicationComponent())
-                .tokensPresenterModule(new TokensPresenterModule(snapFragment)).build()
+                .tokensPresenterModule(new TokensPresenterModule(tokensFragment)).build()
                 .inject(TokensActivity.this);
 
 //        SwitchCompat flow = (SwitchCompat) findViewById(R.id.switchCompat);

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,27 +16,27 @@ import com.commonsware.cwac.preso.PresentationService;
 import java.util.ArrayList;
 
 import in.mobifirst.meetings.R;
+import in.mobifirst.meetings.model.Token;
 import in.mobifirst.meetings.receiver.TTLocalBroadcastManager;
-import in.mobifirst.meetings.tokens.Snap;
-import in.mobifirst.meetings.tokens.SnapAdapter;
+import in.mobifirst.meetings.tokens.MeetingsAdapter;
 
 public class TokenDisplayService extends PresentationService implements
         Runnable {
     public static final String SNAP_LIST_INTENT_KEY = "snap_list_intent_key";
     private Handler handler = null;
     private RecyclerView mRecyclerView;
-    private SnapAdapter mSnapAdapter;
+    private MeetingsAdapter mMeetingsAdapter;
     private boolean flipMe = false;
     private LinearLayoutManager mLinearLayoutManager;
-    private GridLayoutManager mGridLayoutManager;
+    //    private GridLayoutManager mGridLayoutManager;
     private View mRootView;
 
     private BroadcastReceiver mSnapBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            ArrayList<Snap> snapList = intent.getParcelableArrayListExtra(SNAP_LIST_INTENT_KEY);
-            if (snapList != null) {
-                mSnapAdapter.replaceData(snapList);
+            ArrayList<Token> tokens = intent.getParcelableArrayListExtra(SNAP_LIST_INTENT_KEY);
+            if (tokens != null) {
+                mMeetingsAdapter.replaceData(tokens);
             }
         }
     };
@@ -45,7 +44,7 @@ public class TokenDisplayService extends PresentationService implements
     @Override
     public void onCreate() {
         handler = new Handler(Looper.getMainLooper());
-        mSnapAdapter = new SnapAdapter(this);
+        mMeetingsAdapter = new MeetingsAdapter(this);
         TTLocalBroadcastManager.registerReceiver(this, mSnapBroadcastReceiver, TTLocalBroadcastManager.TOKEN_CHANGE_INTENT_ACTION);
         super.onCreate();
     }
@@ -59,12 +58,12 @@ public class TokenDisplayService extends PresentationService implements
     protected View buildPresoView(Context context, LayoutInflater inflater) {
         mRootView = inflater.inflate(R.layout.extended_display, null);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.display_recyclerview);
-        mGridLayoutManager = new GridLayoutManager(context, 2, LinearLayoutManager.VERTICAL, false);
-        ItemOffsetDecoration itemDecoration = new ItemOffsetDecoration(context, R.dimen.item_offset);
-        mRecyclerView.addItemDecoration(itemDecoration);
-//        mLinearLayoutManager = new LinearLayoutManager(context);
-        mRecyclerView.setLayoutManager(mGridLayoutManager);
-        mRecyclerView.setAdapter(mSnapAdapter);
+//        mGridLayoutManager = new GridLayoutManager(context, 2, LinearLayoutManager.VERTICAL, false);
+//        ItemOffsetDecoration itemDecoration = new ItemOffsetDecoration(context, R.dimen.item_offset);
+//        mRecyclerView.addItemDecoration(itemDecoration);
+        mLinearLayoutManager = new LinearLayoutManager(context);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mRecyclerView.setAdapter(mMeetingsAdapter);
 
         run();
 
@@ -73,15 +72,15 @@ public class TokenDisplayService extends PresentationService implements
 
     @Override
     public void run() {
-        int itemCount = mSnapAdapter.getItemCount();
+        int itemCount = mMeetingsAdapter.getItemCount();
         if (itemCount > 0) {
             int firstVisiblePosition =
-                    mGridLayoutManager.findFirstVisibleItemPosition();
+                    mLinearLayoutManager.findFirstVisibleItemPosition();
             int lastVisiblePosition =
-                    mGridLayoutManager.findLastVisibleItemPosition();
+                    mLinearLayoutManager.findLastVisibleItemPosition();
             int window = lastVisiblePosition - firstVisiblePosition;
             int scrollBy = lastVisiblePosition + window / 2;
-            Log.e("TokenDisplayService", "scrollBy = "+scrollBy);
+            Log.e("TokenDisplayService", "scrollBy = " + scrollBy);
             if (scrollBy > 0 && scrollBy < itemCount) {
                 mRecyclerView.scrollToPosition(scrollBy);
             } else {

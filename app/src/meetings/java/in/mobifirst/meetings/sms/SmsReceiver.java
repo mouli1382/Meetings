@@ -77,7 +77,7 @@ public class SmsReceiver extends BroadcastReceiver {
     }
 
     public void addNewTokenForThisStore(String phoneNumber, String metaRationCard, int counterNumber/*, String storeId*/) {
-        Token token = new Token();
+//        Token token = new Token();
         /*int storeSwitch = Integer.parseInt(storeId);
         switch (storeSwitch) {
             case 1:
@@ -89,11 +89,11 @@ public class SmsReceiver extends BroadcastReceiver {
                 break;
         }*/
 
-        token.setPhoneNumber(phoneNumber);
-        token.setCounter(counterNumber);
-        token.setStoreId(mIQSharedPreferences.getSting(ApplicationConstants.STORE_UID));
-        token.setMappingId(metaRationCard);
-        saveToken(token);
+//        token.setPhoneNumber(phoneNumber);
+//        token.setCounter(counterNumber);
+//        token.setStoreId(mIQSharedPreferences.getSting(ApplicationConstants.STORE_UID));
+//        token.setMappingId(metaRationCard);
+//        saveToken(token);
     }
 
     private void saveToken(@NonNull Token token) {

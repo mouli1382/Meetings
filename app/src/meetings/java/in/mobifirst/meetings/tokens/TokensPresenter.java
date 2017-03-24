@@ -332,7 +332,7 @@ final class TokensPresenter implements TokensContract.Presenter {
 
     @Override
     public void cancelToken(@NonNull Token activeToken) {
-        mTokensRepository.activateToken(activeToken);
+        mTokensRepository.cancelToken(activeToken);
         mTokensView.showTokenMarkedCancel();
         loadTokens(false, false);
     }

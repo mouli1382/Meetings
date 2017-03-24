@@ -27,4 +27,5 @@
     <string name="invalid_hour">Start time should be before End time.</string>
     <string name="invalid_minute">Start time cannot be same as End time</string>
     <string name="meetings">Today\'s Agenda</string>
+    <string name="copyright">\@copyright MobiFirst Information Technologies</string>
 </resources>

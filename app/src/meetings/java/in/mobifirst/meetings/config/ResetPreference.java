@@ -45,7 +45,7 @@ public class ResetPreference extends DialogPreference implements DialogInterface
     protected void onDialogClosed(boolean positiveResult) {
         if (positiveResult) {
             //Reset the token counter in the store.
-            mFirebaseDatabaseManager.resetTokenCounter(mFirebaseAuth.getAuthInstance().getCurrentUser().getUid());
+//            mFirebaseDatabaseManager.resetTokenCounter(mFirebaseAuth.getAuthInstance().getCurrentUser().getUid());
         }
     }
 }

@@ -118,8 +118,9 @@ public class AddEditTokenFragment extends BaseFragment implements AddEditTokenCo
                 if (mNetworkConnectionUtils.isConnected()) {
                     if (validateInput()) {
                         //ToDo hardcoding to IND country code as of now.
-//                        mPresenter.addNewToken("+91" + mTitleEditText.getText().toString(),
-//                                mNumberOfCounters > 1 ? (mCounterSpinner.getSelectedItemPosition() + 1) : 1);
+                        mPresenter.addNewMeeting(mTitleEditText.getText().toString()
+                                , mDescriptionEditText.getText().toString()
+                                , mStartTime, mEndTime);
                     }
                 }
             }

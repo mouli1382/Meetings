@@ -4,11 +4,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
@@ -19,8 +21,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -34,11 +34,11 @@ import javax.inject.Inject;
 import in.mobifirst.meetings.R;
 import in.mobifirst.meetings.addedittoken.AddEditTokenActivity;
 import in.mobifirst.meetings.application.IQStoreApplication;
+import in.mobifirst.meetings.display.TokenDisplayService;
 import in.mobifirst.meetings.fragment.BaseFragment;
 import in.mobifirst.meetings.model.Token;
 import in.mobifirst.meetings.preferences.IQSharedPreferences;
 import in.mobifirst.meetings.receiver.TTLocalBroadcastManager;
-import in.mobifirst.meetings.util.ApplicationConstants;
 import in.mobifirst.meetings.util.NetworkConnectionUtils;
 
 public class TokensFragment extends BaseFragment implements TokensContract.View {
@@ -138,7 +138,15 @@ public class TokensFragment extends BaseFragment implements TokensContract.View 
         // Set up floating action button
         FloatingActionButton fab =
                 (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        fab.setVisibility(View.GONE);
+        fab.setImageResource(R.drawable.ic_add);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.addNewToken();
+            }
+        });
+        fab.setVisibility(View.VISIBLE);
+
 
 //        int numberOfCounters = mIQSharedPreferences.getInt(ApplicationConstants.NUMBER_OF_COUNTERS_KEY);
 //
@@ -354,6 +362,12 @@ public class TokensFragment extends BaseFragment implements TokensContract.View 
 
         mTokensView.setVisibility(View.VISIBLE);
         mNoTokensView.setVisibility(View.GONE);
+
+        //Send broadcast to TokenDisplayService here.
+        Intent intent = new Intent(TTLocalBroadcastManager.TOKEN_CHANGE_INTENT_ACTION);
+        intent.putParcelableArrayListExtra(TokenDisplayService.SNAP_LIST_INTENT_KEY,
+                (ArrayList<? extends Parcelable>) Tokens);
+        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
     }
 
     @Override
@@ -377,6 +391,12 @@ public class TokensFragment extends BaseFragment implements TokensContract.View 
                 R.drawable.ic_assignment_turned_in_24dp,
                 false
         );
+
+        //Send broadcast to TokenDisplayService here that there are no tokens.
+        Intent intent = new Intent(TTLocalBroadcastManager.TOKEN_CHANGE_INTENT_ACTION);
+        intent.putParcelableArrayListExtra(TokenDisplayService.SNAP_LIST_INTENT_KEY,
+                new ArrayList<Token>());
+        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
     }
 
     @Override
@@ -413,22 +433,22 @@ public class TokensFragment extends BaseFragment implements TokensContract.View 
 
     @Override
     public void showActiveFilterLabel() {
-        mFilteringLabelView.setText(getResources().getString(R.string.label_active));
+//        mFilteringLabelView.setText(getResources().getString(R.string.label_active));
     }
 
     @Override
     public void showCompletedFilterLabel() {
-        mFilteringLabelView.setText(getResources().getString(R.string.label_completed));
+//        mFilteringLabelView.setText(getResources().getString(R.string.label_completed));
     }
 
     @Override
     public void showAllFilterLabel() {
-        mFilteringLabelView.setText(getResources().getString(R.string.label_all));
+//        mFilteringLabelView.setText(getResources().getString(R.string.label_all));
     }
 
     @Override
     public void showCancelledFilterLabel() {
-        mFilteringLabelView.setText(getResources().getString(R.string.label_completed));
+//        mFilteringLabelView.setText(getResources().getString(R.string.label_completed));
     }
 
     @Override
