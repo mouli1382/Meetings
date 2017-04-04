@@ -62,6 +62,9 @@
         </receiver>
 
         <service android:name=".display.TokenDisplayService"/>
+
+        <service android:name=".display.PresentationService"
+            android:exported="false"/>
     </application>
 
 </manifest>
