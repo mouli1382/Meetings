@@ -27,7 +27,7 @@ import in.mobifirst.meetings.activity.BaseDrawerActivity;
 import in.mobifirst.meetings.application.IQStoreApplication;
 import in.mobifirst.meetings.display.MediaRouterButtonView;
 import in.mobifirst.meetings.display.PresentationService;
-import in.mobifirst.meetings.display.TokenDisplayService;
+//import in.mobifirst.meetings.display.TokenDisplayService;
 import in.mobifirst.meetings.util.ActivityUtilities;
 
 public class TokensActivity extends BaseDrawerActivity {
@@ -245,7 +245,7 @@ public class TokensActivity extends BaseDrawerActivity {
                         CastRemoteDisplayLocalService.stopService();
                     }
                     mCastDevice = null;
-                    TokensActivity.this.finish();
+//                    TokensActivity.this.finish();
                 }
             };
 
@@ -283,7 +283,7 @@ public class TokensActivity extends BaseDrawerActivity {
                         initError();
 
                         mCastDevice = null;
-                        TokensActivity.this.finish();
+//                        TokensActivity.this.finish();
                     }
                 });
     }
@@ -335,7 +335,7 @@ public class TokensActivity extends BaseDrawerActivity {
 
     @Override
     protected void onDestroy() {
-        stopService(new Intent(this, TokenDisplayService.class));
+//        stopService(new Intent(this, TokenDisplayService.class));
         super.onDestroy();
     }
 }

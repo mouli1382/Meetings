@@ -19,9 +19,9 @@ repositories {
         url 'https://maven.fabric.io/public'
     }
 
-    maven {
-        url "https://s3.amazonaws.com/repo.commonsware.com"
-    }
+//    maven {
+//        url "https://s3.amazonaws.com/repo.commonsware.com"
+//    }
 }
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
@@ -125,7 +125,7 @@ dependencies {
 
     compile "com.github.bumptech.glide:glide:$rootProject.glideVersion"
 
-    compile 'com.commonsware.cwac:presentation:0.4.6'
+//    compile 'com.commonsware.cwac:presentation:0.4.6'
 
     testCompile 'junit:junit:4.12'
 }

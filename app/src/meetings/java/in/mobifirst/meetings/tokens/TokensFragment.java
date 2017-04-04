@@ -34,7 +34,8 @@ import javax.inject.Inject;
 import in.mobifirst.meetings.R;
 import in.mobifirst.meetings.addedittoken.AddEditTokenActivity;
 import in.mobifirst.meetings.application.IQStoreApplication;
-import in.mobifirst.meetings.display.TokenDisplayService;
+import in.mobifirst.meetings.display.PresentationService;
+//import in.mobifirst.meetings.display.TokenDisplayService;
 import in.mobifirst.meetings.fragment.BaseFragment;
 import in.mobifirst.meetings.model.Token;
 import in.mobifirst.meetings.preferences.IQSharedPreferences;
@@ -365,7 +366,7 @@ public class TokensFragment extends BaseFragment implements TokensContract.View 
 
         //Send broadcast to TokenDisplayService here.
         Intent intent = new Intent(TTLocalBroadcastManager.TOKEN_CHANGE_INTENT_ACTION);
-        intent.putParcelableArrayListExtra(TokenDisplayService.SNAP_LIST_INTENT_KEY,
+        intent.putParcelableArrayListExtra(PresentationService.SNAP_LIST_INTENT_KEY,
                 (ArrayList<? extends Parcelable>) Tokens);
         LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
     }
@@ -394,7 +395,7 @@ public class TokensFragment extends BaseFragment implements TokensContract.View 
 
         //Send broadcast to TokenDisplayService here that there are no tokens.
         Intent intent = new Intent(TTLocalBroadcastManager.TOKEN_CHANGE_INTENT_ACTION);
-        intent.putParcelableArrayListExtra(TokenDisplayService.SNAP_LIST_INTENT_KEY,
+        intent.putParcelableArrayListExtra(PresentationService.SNAP_LIST_INTENT_KEY,
                 new ArrayList<Token>());
         LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
     }
