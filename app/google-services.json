@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "531436535706-562jaqs408tag76ic7i6p7gt1q5jrhcs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "in.mobifirst.meetings",
+            "certificate_hash": "1813ef8a1a651d6c1a5af6f6825d2ec7bcba4e71"
+          }
+        },
+        {
           "client_id": "531436535706-576f92fhq5gmbtbqe9svhm1311gqku9s.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
