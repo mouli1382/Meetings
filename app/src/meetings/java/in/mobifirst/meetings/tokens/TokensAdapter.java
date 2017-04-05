@@ -1,6 +1,7 @@
 package in.mobifirst.meetings.tokens;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,12 +56,16 @@ public class TokensAdapter extends RecyclerView.Adapter<TokensAdapter.ViewHolder
 
         if (token.isActive()) {
             holder.mStatusTextView.setText("ACT");
+            holder.mStatusTextView.setTextColor(Color.GREEN);
         } else if (token.isCompleted()) {
             holder.mStatusTextView.setText("COM");
+            holder.mStatusTextView.setTextColor(Color.GRAY);
         } else if (token.isCancelled()) {
             holder.mStatusTextView.setText("CAN");
+            holder.mStatusTextView.setTextColor(Color.RED);
         } else {
             holder.mStatusTextView.setText("SCH");
+            holder.mStatusTextView.setTextColor(mContext.getResources().getColor(R.color.common_google_signin_btn_text_dark_focused));
         }
 
 
