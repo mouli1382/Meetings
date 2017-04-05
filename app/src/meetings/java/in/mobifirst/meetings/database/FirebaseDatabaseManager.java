@@ -1,6 +1,7 @@
 package in.mobifirst.meetings.database;
 
 import android.support.annotation.NonNull;
+import android.text.format.DateUtils;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -230,19 +231,19 @@ public class FirebaseDatabaseManager implements DatabaseManager {
                                                     return new Long(token.getStartTime()).compareTo(token2.getStartTime());
                                                 }
                                             })
-//                                            .flatMap(new Func1<List<Token>, Observable<Token>>() {
-//                                                @Override
-//                                                public Observable<Token> call(List<Token> tokens) {
-//                                                    return Observable.from(tokens);
-//                                                }
-//                                            })
-//                                            .filter(new Func1<Token, Boolean>() {
-//                                                @Override
-//                                                public Boolean call(Token token) {
-//                                                    return token.getCounter() == currentCounter && !token.isCompleted();
-//                                                }
-//                                            })
-//                                            .toList()
+                                            .flatMap(new Func1<List<Token>, Observable<Token>>() {
+                                                @Override
+                                                public Observable<Token> call(List<Token> tokens) {
+                                                    return Observable.from(tokens);
+                                                }
+                                            })
+                                            .filter(new Func1<Token, Boolean>() {
+                                                @Override
+                                                public Boolean call(Token token) {
+                                                    return DateUtils.isToday(token.getTimestamp());
+                                                }
+                                            })
+                                            .toList()
                                             .subscribe(new Action1<List<Token>>() {
                                                 @Override
                                                 public void call(List<Token> tokenList) {

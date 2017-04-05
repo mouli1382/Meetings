@@ -52,15 +52,27 @@ public class TokensAdapter extends RecyclerView.Adapter<TokensAdapter.ViewHolder
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Token token = mTokens.get(position);
 
+
         if (token.isActive()) {
-            holder.mStatusImageButton.setImageResource(R.drawable.ic_alarm_black_24dp);
+            holder.mStatusTextView.setText("ACT");
         } else if (token.isCompleted()) {
-            holder.mStatusImageButton.setImageResource(R.drawable.ic_check_circle_black_24dp);
+            holder.mStatusTextView.setText("COM");
         } else if (token.isCancelled()) {
-            holder.mStatusImageButton.setImageResource(R.drawable.ic_highlight_off_black_24dp);
+            holder.mStatusTextView.setText("CAN");
         } else {
-            holder.mStatusImageButton.setImageResource(R.drawable.ic_schedule_black_24dp);
+            holder.mStatusTextView.setText("SCH");
         }
+
+
+//        if (token.isActive()) {
+//            holder.mStatusImageButton.setImageResource(R.drawable.ic_alarm_black_24dp);
+//        } else if (token.isCompleted()) {
+//            holder.mStatusImageButton.setImageResource(R.drawable.ic_check_circle_black_24dp);
+//        } else if (token.isCancelled()) {
+//            holder.mStatusImageButton.setImageResource(R.drawable.ic_highlight_off_black_24dp);
+//        } else {
+//            holder.mStatusImageButton.setImageResource(R.drawable.ic_schedule_black_24dp);
+//        }
 
         holder.mTitle.setText(token.getTitle());
         holder.mDescription.setText(token.getDescription());
@@ -109,7 +121,8 @@ public class TokensAdapter extends RecyclerView.Adapter<TokensAdapter.ViewHolder
         protected ImageButton mTokenCancelButton;
         protected ImageButton mTokenCompleteButton;
 
-        protected ImageButton mStatusImageButton;
+        //        protected ImageButton mStatusImageButton;
+        protected TextView mStatusTextView;
 
         public ViewHolder(View view) {
             super(view);
@@ -121,7 +134,8 @@ public class TokensAdapter extends RecyclerView.Adapter<TokensAdapter.ViewHolder
             mTokenCancelButton = (ImageButton) view.findViewById(R.id.imageCancelButton);
             mTokenCompleteButton = (ImageButton) view.findViewById(R.id.imageCompleteButton);
 
-            mStatusImageButton = (ImageButton) view.findViewById(R.id.statusImageButton);
+//            mStatusImageButton = (ImageButton) view.findViewById(R.id.statusImageButton);
+            mStatusTextView = (TextView) view.findViewById(R.id.statusTextView);
         }
     }
 }

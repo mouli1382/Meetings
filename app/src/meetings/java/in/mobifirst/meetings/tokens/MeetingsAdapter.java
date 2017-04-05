@@ -1,6 +1,8 @@
 package in.mobifirst.meetings.tokens;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,18 +59,34 @@ public class MeetingsAdapter extends RecyclerView.Adapter<MeetingsAdapter.ViewHo
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Token token = mTokens.get(position);
 
+//        if (position % 2 == 0) {
+//            holder.mCardView.setCardBackgroundColor(Color.parseColor("#673AB7"));
+//        } else {
+//            holder.mCardView.setCardBackgroundColor(Color.parseColor("#4527A0"));
+//        }
+
+
         if (token.isActive()) {
             holder.mStatusTextView.setText("ACTIVE");
-            holder.mStatusTextView.setTextColor(mContext.getResources().getColor(android.R.color.holo_green_dark));
+            holder.mCardView.setCardBackgroundColor(Color.parseColor("#1B5E20"));
+//            holder.mStatusTextView.setTextColor(mContext.getResources().getColor(android.R.color.holo_green_dark));
+            holder.mCardView.setCardElevation(mContext.getResources().getDimension(R.dimen.card_activated_elevation));
         } else if (token.isCompleted()) {
             holder.mStatusTextView.setText("COMPLETED");
-            holder.mStatusTextView.setTextColor(mContext.getResources().getColor(R.color.colorPrimaryDark));
+            holder.mCardView.setCardBackgroundColor(Color.parseColor("#607D8B"));
+//            holder.mStatusTextView.setTextColor(mContext.getResources().getColor(R.color.colorPrimaryDark));
+            holder.mCardView.setCardElevation(mContext.getResources().getDimension(R.dimen.card_completed_elevation));
+            holder.mCardView.setEnabled(false);
         } else if (token.isCancelled()) {
             holder.mStatusTextView.setText("CANCELLED");
-            holder.mStatusTextView.setTextColor(mContext.getResources().getColor(android.R.color.holo_red_dark));
+            holder.mCardView.setCardBackgroundColor(Color.parseColor("#EF5350"));
+//            holder.mStatusTextView.setTextColor(mContext.getResources().getColor(android.R.color.holo_red_dark));
+            holder.mCardView.setCardElevation(mContext.getResources().getDimension(R.dimen.card_cancelled_elevation));
         } else {
             holder.mStatusTextView.setText("SCHEDULED");
-            holder.mStatusTextView.setTextColor(mContext.getResources().getColor(R.color.common_google_signin_btn_text_dark_focused));
+            holder.mCardView.setCardBackgroundColor(Color.parseColor("#673AB7"));
+//            holder.mStatusTextView.setTextColor(mContext.getResources().getColor(R.color.common_google_signin_btn_text_dark_focused));
+            holder.mCardView.setCardElevation(mContext.getResources().getDimension(R.dimen.card_scheduled_elevation));
         }
 
         holder.mTitle.setText(token.getTitle());
@@ -92,9 +110,11 @@ public class MeetingsAdapter extends RecyclerView.Adapter<MeetingsAdapter.ViewHo
         protected TextView mEndTime;
 
         protected TextView mStatusTextView;
+        protected CardView mCardView;
 
         public ViewHolder(View view) {
             super(view);
+            mCardView = (CardView) view;
             mTitle = (TextView) view.findViewById(R.id.title);
             mDescription = (TextView) view.findViewById(R.id.description);
             mStartTime = (TextView) view.findViewById(R.id.startTime);

@@ -31,4 +31,5 @@
     <string name="presentation_with_media_router_play_on">Cast to...</string>
     <string name="app_id">690D0497</string>
     <string name="init_error">Error starting the remote display</string>
+    <string name="display_no_meetings">Congratulations! You have completed all your scheduled Meetings.</string>
 </resources>

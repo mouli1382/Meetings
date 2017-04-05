@@ -27,7 +27,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Display;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.google.android.gms.cast.CastPresentation;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
@@ -52,6 +54,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
     private MeetingsAdapter mMeetingsAdapter;
     private boolean flipMe = false;
     private LinearLayoutManager mLinearLayoutManager;
+    private TextView mNoTokensTextView;
 
     private BroadcastReceiver mSnapBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -60,6 +63,15 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             if (tokens != null) {
                 if (mMeetingsAdapter != null) {
                     mMeetingsAdapter.replaceData(tokens);
+                }
+            }
+            if (tokens.size() > 0) {
+                if (mNoTokensTextView != null) {
+                    mNoTokensTextView.setVisibility(View.GONE);
+                }
+            } else {
+                if (mNoTokensTextView != null) {
+                    mNoTokensTextView.setVisibility(View.VISIBLE);
                 }
             }
         }
@@ -108,7 +120,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
 
     private void createPresentation(Display display) {
         dismissPresentation();
-        mPresentation = new SeconScreenPresentation(this, display);
+        mPresentation = new SeconScreenPresentation(this, display, R.style.AppTheme);
 
         try {
             mPresentation.show();
@@ -121,8 +133,8 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
 
     private class SeconScreenPresentation extends CastPresentation {
 
-        public SeconScreenPresentation(Context context, Display display) {
-            super(context, display);
+        public SeconScreenPresentation(Context context, Display display, int appTheme) {
+            super(context, display, appTheme);
         }
 
         @Override
@@ -130,6 +142,8 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             super.onCreate(savedInstanceState);
 
             setContentView(R.layout.extended_display);
+            mNoTokensTextView = (TextView) findViewById(R.id.noTokensTextView);
+            mNoTokensTextView.setVisibility(View.GONE);
             mRecyclerView = (RecyclerView) findViewById(R.id.display_recyclerview);
             mLinearLayoutManager = new LinearLayoutManager(getContext());
             mRecyclerView.setLayoutManager(mLinearLayoutManager);
@@ -145,6 +159,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
     public void run() {
         int itemCount = mMeetingsAdapter.getItemCount();
         if (itemCount > 0) {
+            mNoTokensTextView.setVisibility(View.GONE);
             int firstVisiblePosition =
                     mLinearLayoutManager.findFirstVisibleItemPosition();
             int lastVisiblePosition =
@@ -165,6 +180,8 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                     flipMe = !flipMe;
                 }
             }
+        } else {
+            mNoTokensTextView.setVisibility(View.VISIBLE);
         }
         mHandler.postDelayed(this, 5000);
     }
