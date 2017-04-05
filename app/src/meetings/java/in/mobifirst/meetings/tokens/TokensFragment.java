@@ -118,6 +118,11 @@ public class TokensFragment extends BaseFragment implements TokensContract.View 
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         mPresenter.unsubscribe();
         TTLocalBroadcastManager.unRegisterReceiver(getActivity(), mNetworkBroadcastReceiver);
     }
