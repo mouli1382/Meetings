@@ -24,6 +24,7 @@ public class Token implements Parcelable {
 //    private int counter;
     private long activatedTokenTime;
     private long tokenFinishTime;
+    private long tokenCancelledTime;
 //    private String userName;
 //    private String mappingId;
 
@@ -203,6 +204,14 @@ public class Token implements Parcelable {
         this.tokenFinishTime = tokenFinishTime;
     }
 
+    public long getTokenCancelledTime() {
+        return tokenCancelledTime;
+    }
+
+    public void setTokenCancelledTime(long tokenCancelledTime) {
+        this.tokenCancelledTime = tokenCancelledTime;
+    }
+
     public int getBuzzCount() {
         return buzzCount;
     }
@@ -260,6 +269,7 @@ public class Token implements Parcelable {
 //        result.put("areaName", areaName);
         result.put("activatedTokenTime", activatedTokenTime);
         result.put("tokenFinishTime", tokenFinishTime);
+        result.put("tokenCancelledTime", tokenCancelledTime);
 
         result.put("title", title);
         result.put("description", description);
@@ -276,19 +286,19 @@ public class Token implements Parcelable {
 
         Token token = (Token) o;
 
-        if (!getTitle().equalsIgnoreCase(token.getTitle())) return false;
-        if (!getDescription().equalsIgnoreCase(token.getDescription())) return false;
-
-//        if (getTokenNumber() != token.getTokenNumber()) return false;
+        if (getTimestamp() != token.getTimestamp()) return false;
         if (getStatus() != token.getStatus()) return false;
         if (getBuzzCount() != token.getBuzzCount()) return false;
+        if (getActivatedTokenTime() != token.getActivatedTokenTime()) return false;
+        if (getTokenFinishTime() != token.getTokenFinishTime()) return false;
+        if (getTokenCancelledTime() != token.getTokenCancelledTime()) return false;
+        if (getStartTime() != token.getStartTime()) return false;
+        if (getEndTime() != token.getEndTime()) return false;
         if (!getuId().equals(token.getuId())) return false;
         if (!getStoreId().equals(token.getStoreId())) return false;
-//        if (!getPhoneNumber().equals(token.getPhoneNumber())) return false;
-//        if (!getAreaName().equals(token.getAreaName())) return false;
-        if (getActivatedTokenTime() != (token.getActivatedTokenTime())) return false;
-//        if (!getMappingId().equals(token.getMappingId())) return false;
-        return getTimestamp() != (token.getTimestamp());
+        if (getTitle() != null ? !getTitle().equals(token.getTitle()) : token.getTitle() != null)
+            return false;
+        return getDescription() != null ? getDescription().equals(token.getDescription()) : token.getDescription() == null;
 
     }
 
@@ -296,16 +306,56 @@ public class Token implements Parcelable {
     public int hashCode() {
         int result = getuId().hashCode();
         result = 31 * result + getStoreId().hashCode();
-//        result = 31 * result + getPhoneNumber().hashCode();
-//        result = 31 * result + (int) (getTokenNumber() ^ (getTokenNumber() >>> 32));
         result = 31 * result + (int) (getTimestamp() ^ (getTimestamp() >>> 32));
-        result = 31 * result + (int) (getActivatedTokenTime() ^ (getActivatedTokenTime() >>> 32));
         result = 31 * result + getStatus();
         result = 31 * result + getBuzzCount();
-//        result = 31 * result + getAreaName().hashCode();
-//        result = 31 * result + getMappingId().hashCode();
+        result = 31 * result + (int) (getActivatedTokenTime() ^ (getActivatedTokenTime() >>> 32));
+        result = 31 * result + (int) (getTokenFinishTime() ^ (getTokenFinishTime() >>> 32));
+        result = 31 * result + (int) (getTokenCancelledTime() ^ (getTokenCancelledTime() >>> 32));
+        result = 31 * result + (getTitle() != null ? getTitle().hashCode() : 0);
+        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
+        result = 31 * result + (int) (getStartTime() ^ (getStartTime() >>> 32));
+        result = 31 * result + (int) (getEndTime() ^ (getEndTime() >>> 32));
         return result;
     }
+
+    //    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (!(o instanceof Token)) return false;
+//
+//        Token token = (Token) o;
+//
+//        if (!getTitle().equalsIgnoreCase(token.getTitle())) return false;
+//        if (!getDescription().equalsIgnoreCase(token.getDescription())) return false;
+//
+////        if (getTokenNumber() != token.getTokenNumber()) return false;
+//        if (getStatus() != token.getStatus()) return false;
+//        if (getBuzzCount() != token.getBuzzCount()) return false;
+//        if (!getuId().equals(token.getuId())) return false;
+//        if (!getStoreId().equals(token.getStoreId())) return false;
+////        if (!getPhoneNumber().equals(token.getPhoneNumber())) return false;
+////        if (!getAreaName().equals(token.getAreaName())) return false;
+//        if (getActivatedTokenTime() != (token.getActivatedTokenTime())) return false;
+////        if (!getMappingId().equals(token.getMappingId())) return false;
+//        return getTimestamp() != (token.getTimestamp());
+//
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        int result = getuId().hashCode();
+//        result = 31 * result + getStoreId().hashCode();
+////        result = 31 * result + getPhoneNumber().hashCode();
+////        result = 31 * result + (int) (getTokenNumber() ^ (getTokenNumber() >>> 32));
+//        result = 31 * result + (int) (getTimestamp() ^ (getTimestamp() >>> 32));
+//        result = 31 * result + (int) (getActivatedTokenTime() ^ (getActivatedTokenTime() >>> 32));
+//        result = 31 * result + getStatus();
+//        result = 31 * result + getBuzzCount();
+////        result = 31 * result + getAreaName().hashCode();
+////        result = 31 * result + getMappingId().hashCode();
+//        return result;
+//    }
 
     @Override
     public int describeContents() {
@@ -327,6 +377,7 @@ public class Token implements Parcelable {
 //        parcel.writeInt(counter);
         parcel.writeLong(activatedTokenTime);
         parcel.writeLong(tokenFinishTime);
+        parcel.writeLong(tokenCancelledTime);
 
         parcel.writeString(title);
         parcel.writeString(description);
@@ -349,6 +400,7 @@ public class Token implements Parcelable {
 //        counter = in.readInt();
         activatedTokenTime = in.readLong();
         tokenFinishTime = in.readLong();
+        tokenCancelledTime = in.readLong();
 
         title = in.readString();
         description = in.readString();
