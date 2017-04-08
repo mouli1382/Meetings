@@ -4,13 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
@@ -34,13 +32,13 @@ import javax.inject.Inject;
 import in.mobifirst.meetings.R;
 import in.mobifirst.meetings.addedittoken.AddEditTokenActivity;
 import in.mobifirst.meetings.application.IQStoreApplication;
-import in.mobifirst.meetings.display.PresentationService;
-//import in.mobifirst.meetings.display.TokenDisplayService;
 import in.mobifirst.meetings.fragment.BaseFragment;
 import in.mobifirst.meetings.model.Token;
 import in.mobifirst.meetings.preferences.IQSharedPreferences;
 import in.mobifirst.meetings.receiver.TTLocalBroadcastManager;
 import in.mobifirst.meetings.util.NetworkConnectionUtils;
+
+//import in.mobifirst.meetings.display.TokenDisplayService;
 
 public class TokensFragment extends BaseFragment implements TokensContract.View {
 
@@ -118,11 +116,6 @@ public class TokensFragment extends BaseFragment implements TokensContract.View 
     @Override
     public void onPause() {
         super.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
         mPresenter.unsubscribe();
         TTLocalBroadcastManager.unRegisterReceiver(getActivity(), mNetworkBroadcastReceiver);
     }
@@ -364,16 +357,18 @@ public class TokensFragment extends BaseFragment implements TokensContract.View 
 
     @Override
     public void showTokens(List<Token> Tokens) {
-        mTokensAdapter.replaceData(Tokens);
+        if (isActive()) {
+            mTokensAdapter.replaceData(Tokens);
 
-        mTokensView.setVisibility(View.VISIBLE);
-        mNoTokensView.setVisibility(View.GONE);
+            mTokensView.setVisibility(View.VISIBLE);
+            mNoTokensView.setVisibility(View.GONE);
+        }
 
-        //Send broadcast to TokenDisplayService here.
-        Intent intent = new Intent(TTLocalBroadcastManager.TOKEN_CHANGE_INTENT_ACTION);
-        intent.putParcelableArrayListExtra(PresentationService.SNAP_LIST_INTENT_KEY,
-                (ArrayList<? extends Parcelable>) Tokens);
-        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+//        //Send broadcast to TokenDisplayService here.
+//        Intent intent = new Intent(TTLocalBroadcastManager.TOKEN_CHANGE_INTENT_ACTION);
+//        intent.putParcelableArrayListExtra(PresentationService.SNAP_LIST_INTENT_KEY,
+//                (ArrayList<? extends Parcelable>) Tokens);
+//        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
     }
 
     @Override
@@ -398,11 +393,11 @@ public class TokensFragment extends BaseFragment implements TokensContract.View 
                 false
         );
 
-        //Send broadcast to TokenDisplayService here that there are no tokens.
-        Intent intent = new Intent(TTLocalBroadcastManager.TOKEN_CHANGE_INTENT_ACTION);
-        intent.putParcelableArrayListExtra(PresentationService.SNAP_LIST_INTENT_KEY,
-                new ArrayList<Token>());
-        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+//        //Send broadcast to TokenDisplayService here that there are no tokens.
+//        Intent intent = new Intent(TTLocalBroadcastManager.TOKEN_CHANGE_INTENT_ACTION);
+//        intent.putParcelableArrayListExtra(PresentationService.SNAP_LIST_INTENT_KEY,
+//                new ArrayList<Token>());
+//        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
     }
 
     @Override

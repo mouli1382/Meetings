@@ -57,7 +57,7 @@ public class SettingsFragment extends BaseFragment implements SettingsContract.V
 
     private ImageView mStoreImageView;
     private ProgressBar mProgressBar;
-    private Button mUploadButton;
+//    private Button mUploadButton;
     private FloatingActionButton fab;
     private TextInputEditText mStoreNameEditText;
     private TextInputEditText mStoreAreaEditText;
@@ -268,14 +268,14 @@ public class SettingsFragment extends BaseFragment implements SettingsContract.V
         });
         mProgressBar = (ProgressBar) root.findViewById(R.id.logoProgress);
         mStoreImageView = (ImageView) root.findViewById(R.id.storeProfilePic);
-        mUploadButton = (Button) root.findViewById(R.id.uploadButton);
-        mUploadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mProgressBar.setVisibility(View.VISIBLE);
-                mPresenter.uploadFile(bitmapData);
-            }
-        });
+//        mUploadButton = (Button) root.findViewById(R.id.uploadButton);
+//        mUploadButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mProgressBar.setVisibility(View.VISIBLE);
+//                mPresenter.uploadFile(bitmapData);
+//            }
+//        });
 
         mStoreImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -334,7 +334,7 @@ public class SettingsFragment extends BaseFragment implements SettingsContract.V
                             resource.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                             bitmapData = baos.toByteArray();
 
-                            mUploadButton.setEnabled(true);
+//                            mUploadButton.setEnabled(true);
                             fab.setEnabled(true);
                             return false;
                         }
@@ -363,7 +363,7 @@ public class SettingsFragment extends BaseFragment implements SettingsContract.V
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 bitmapData = baos.toByteArray();
 
-                mUploadButton.setEnabled(true);
+//                mUploadButton.setEnabled(true);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -379,7 +379,7 @@ public class SettingsFragment extends BaseFragment implements SettingsContract.V
     public void onFileUploadFinished(Uri uri) {
         mProgressBar.setVisibility(View.GONE);
         mProfilePicUri = uri.toString();
-        mUploadButton.setEnabled(false);
+//        mUploadButton.setEnabled(false);
     }
 
     @Override

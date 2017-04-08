@@ -1,7 +1,7 @@
 def versionMajor = 1
 def versionMinor = 0
 def versionPatch = 0
-def versionBuild = 0 // bump for dogfood builds, public betas, etc.
+def versionBuild = 1 // bump for dogfood builds, public betas, etc.
 
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
 def gitBranchName = 'git rev-parse --abbrev-ref HEAD'.execute([], project.rootDir).text.trim()
@@ -128,6 +128,8 @@ dependencies {
 //    compile 'com.commonsware.cwac:presentation:0.4.6'
 
     testCompile 'junit:junit:4.12'
+
+    compile 'com.github.amlcurran.showcaseview:library:5.4.3'
 }
 
 apply plugin: 'com.google.gms.google-services'

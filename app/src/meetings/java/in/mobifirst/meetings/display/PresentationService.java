@@ -23,6 +23,8 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Parcelable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -35,11 +37,19 @@ import com.google.android.gms.cast.CastPresentation;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import in.mobifirst.meetings.R;
+import in.mobifirst.meetings.application.IQStoreApplication;
 import in.mobifirst.meetings.model.Token;
 import in.mobifirst.meetings.receiver.TTLocalBroadcastManager;
+import in.mobifirst.meetings.token.TokensRepository;
 import in.mobifirst.meetings.tokens.MeetingsAdapter;
+import rx.Observer;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Service to keep the remote display running even when the app goes into the background
@@ -55,6 +65,9 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
     private boolean flipMe = false;
     private LinearLayoutManager mLinearLayoutManager;
     private TextView mNoTokensTextView;
+
+    private TokensRepository mTokensRepository;
+    private CompositeSubscription mSubscriptions;
 
     private BroadcastReceiver mSnapBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -79,23 +92,28 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
 
     // Second screen
     private CastPresentation mPresentation;
-    private MediaPlayer mMediaPlayer;
+//    private MediaPlayer mMediaPlayer;
 
     @Override
     public void onCreate() {
         super.onCreate();
         // Audio
-        mMediaPlayer = MediaPlayer.create(this, R.raw.sound);
-        mMediaPlayer.setVolume((float) 0.1, (float) 0.1);
-        mMediaPlayer.setLooping(true);
+//        mMediaPlayer = MediaPlayer.create(this, R.raw.sound);
+//        mMediaPlayer.setVolume((float) 0.1, (float) 0.1);
+//        mMediaPlayer.setLooping(true);
 
         mHandler = new Handler(Looper.getMainLooper());
         TTLocalBroadcastManager.registerReceiver(this, mSnapBroadcastReceiver, TTLocalBroadcastManager.TOKEN_CHANGE_INTENT_ACTION);
+        mSubscriptions = new CompositeSubscription();
+        mTokensRepository = ((IQStoreApplication) getApplication()).getApplicationComponent().getTokensRepository();
     }
 
     @Override
     public void onDestroy() {
         mHandler.removeCallbacks(this);
+        if (mSubscriptions != null) {
+            mSubscriptions.clear();
+        }
         TTLocalBroadcastManager.unRegisterReceiver(this, mSnapBroadcastReceiver);
         super.onDestroy();
     }
@@ -112,7 +130,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
 
     private void dismissPresentation() {
         if (mPresentation != null) {
-            mMediaPlayer.stop();
+//            mMediaPlayer.stop();
             mPresentation.dismiss();
             mPresentation = null;
         }
@@ -124,10 +142,57 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
 
         try {
             mPresentation.show();
-            mMediaPlayer.start();
+            Log.e(TAG, "Presentation Created");
+            loadMeetingsForSecondaryScreen();
+//            mMediaPlayer.start();
         } catch (WindowManager.InvalidDisplayException ex) {
             Log.e(TAG, "Unable to show presentation, display was removed.", ex);
+            if (mSubscriptions != null) {
+                mSubscriptions.clear();
+            }
             dismissPresentation();
+        }
+    }
+
+    private void loadMeetingsForSecondaryScreen() {
+        mSubscriptions.clear();
+        Subscription subscription = mTokensRepository
+                .getTokens(1/* Assuming it will be 1 for now*/)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<Token>>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(List<Token> tokens) {
+                        Log.e(TAG, "Fetched the tokens from Firebase successfully!");
+                        processTokens(tokens);
+                    }
+                });
+        mSubscriptions.add(subscription);
+    }
+
+    private void processTokens(List<Token> tokens) {
+        if (tokens == null || tokens.size() == 0) {
+            Log.e(TAG, "broadcast being sent to display service.");
+            //Send broadcast to PresentationService here that there are no tokens.
+            Intent intent = new Intent(TTLocalBroadcastManager.TOKEN_CHANGE_INTENT_ACTION);
+            intent.putParcelableArrayListExtra(PresentationService.SNAP_LIST_INTENT_KEY,
+                    new ArrayList<Token>());
+            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+        } else {
+            Log.e(TAG, "broadcast being sent to display service with tokens");
+            //Send broadcast to PresentationService here.
+            Intent intent = new Intent(TTLocalBroadcastManager.TOKEN_CHANGE_INTENT_ACTION);
+            intent.putParcelableArrayListExtra(PresentationService.SNAP_LIST_INTENT_KEY,
+                    (ArrayList<? extends Parcelable>) tokens);
+            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
         }
     }
 

@@ -56,16 +56,16 @@ public class TokensAdapter extends RecyclerView.Adapter<TokensAdapter.ViewHolder
 
         if (token.isActive()) {
             holder.mStatusTextView.setText("ACT");
-            holder.mStatusTextView.setTextColor(Color.GREEN);
+            holder.mStatusTextView.setTextColor(Color.parseColor("#1B5E20"));
         } else if (token.isCompleted()) {
             holder.mStatusTextView.setText("COM");
-            holder.mStatusTextView.setTextColor(Color.GRAY);
+            holder.mStatusTextView.setTextColor(Color.parseColor("#607D8B"));
         } else if (token.isCancelled()) {
             holder.mStatusTextView.setText("CAN");
-            holder.mStatusTextView.setTextColor(Color.RED);
+            holder.mStatusTextView.setTextColor(Color.parseColor("#EF5350"));
         } else {
             holder.mStatusTextView.setText("SCH");
-            holder.mStatusTextView.setTextColor(mContext.getResources().getColor(R.color.common_google_signin_btn_text_dark_focused));
+            holder.mStatusTextView.setTextColor(Color.parseColor("#673AB7"));
         }
 
 
