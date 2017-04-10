@@ -4,13 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,10 +22,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -426,7 +422,7 @@ public class SnapFragment extends BaseFragment implements TokensContract.View {
     @Override
     public void showAddToken() {
         Intent intent = new Intent(getContext(), AddEditTokenActivity.class);
-        startActivityForResult(intent, AddEditTokenActivity.REQUEST_ADD_TOKEN);
+        startActivityForResult(intent, AddEditTokenActivity.REQUEST_ADD_EDIT_TOKEN);
     }
 
     @Override

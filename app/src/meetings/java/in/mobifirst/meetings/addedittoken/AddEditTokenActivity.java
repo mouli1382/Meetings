@@ -15,8 +15,7 @@ import in.mobifirst.meetings.util.ActivityUtilities;
 
 public class AddEditTokenActivity extends BaseActivity {
 
-    public static final int REQUEST_ADD_TOKEN = 1;
-    public static final int REQUEST_EDIT_TOKEN = 2;
+    public static final int REQUEST_ADD_EDIT_TOKEN = 1;
     public static final String INTENT_EXTRA_TOKEN_ID = "intent_extra_token_id";
 
     @Inject

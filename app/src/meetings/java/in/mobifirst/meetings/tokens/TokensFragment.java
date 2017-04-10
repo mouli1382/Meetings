@@ -464,14 +464,14 @@ public class TokensFragment extends BaseFragment implements TokensContract.View 
     @Override
     public void showAddToken() {
         Intent intent = new Intent(getContext(), AddEditTokenActivity.class);
-        startActivityForResult(intent, AddEditTokenActivity.REQUEST_ADD_TOKEN);
+        startActivityForResult(intent, AddEditTokenActivity.REQUEST_ADD_EDIT_TOKEN);
     }
 
     @Override
     public void showTokenDetailsUi(String TokenId) {
         Intent intent = new Intent(getContext(), AddEditTokenActivity.class);
         intent.putExtra(AddEditTokenActivity.INTENT_EXTRA_TOKEN_ID, TokenId);
-        startActivityForResult(intent, AddEditTokenActivity.REQUEST_EDIT_TOKEN);
+        startActivityForResult(intent, AddEditTokenActivity.REQUEST_ADD_EDIT_TOKEN);
     }
 
     @Override
