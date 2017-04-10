@@ -109,6 +109,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerInParent="true"
                 android:enabled="false"
+                android:visibility="gone"
                 android:text="@string/upload" />
 
         </RelativeLayout>

@@ -10,7 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.commonsware.cwac.preso.PresentationService;
 
 import java.util.ArrayList;
@@ -65,6 +67,14 @@ public class TokenDisplayService extends PresentationService implements
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.setAdapter(mMeetingsAdapter);
 
+
+        //Load the welcome image here
+        ImageView welcomeImageView = (ImageView) mRootView.findViewById(R.id.welcome_image);
+        Glide.with(getApplicationContext())
+                .load(R.drawable.chandra_babu_naidu)
+                .centerCrop()
+                .into(welcomeImageView);
+
         run();
 
         return (mRootView);
@@ -79,20 +89,24 @@ public class TokenDisplayService extends PresentationService implements
             int lastVisiblePosition =
                     mLinearLayoutManager.findLastVisibleItemPosition();
             int window = lastVisiblePosition - firstVisiblePosition;
-            int scrollBy = lastVisiblePosition + window / 2;
+            int scrollBy = lastVisiblePosition + ((window > 2) ? window / 2 : 1);
             Log.e("TokenDisplayService", "scrollBy = " + scrollBy);
             if (scrollBy > 0 && scrollBy < itemCount) {
-                mRecyclerView.scrollToPosition(scrollBy);
-            } else {
-                if (!flipMe) {
-                    //Scroll to end to show the non-window multiples
-                    mRecyclerView.scrollToPosition(itemCount - 1);
-                    flipMe = !flipMe;
+                if (scrollBy < itemCount - 1) {
+                    mRecyclerView.scrollToPosition(scrollBy);
                 } else {
-                    //Scroll to start
-                    mRecyclerView.scrollToPosition(0);
-                    flipMe = !flipMe;
+                    mRecyclerView.scrollToPosition(itemCount - 1);
                 }
+            } else {
+//                if (!flipMe) {
+//                    //Scroll to end to show the non-window multiples
+//                    mRecyclerView.scrollToPosition(itemCount - 1);
+//                    flipMe = !flipMe;
+//                } else {
+                //Scroll to start
+                mRecyclerView.scrollToPosition(0);
+//                    flipMe = !flipMe;
+//                }
             }
         }
 //        if (flipMe) {

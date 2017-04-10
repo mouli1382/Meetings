@@ -1,6 +1,7 @@
 package in.mobifirst.meetings.tokens;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,15 +53,31 @@ public class TokensAdapter extends RecyclerView.Adapter<TokensAdapter.ViewHolder
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Token token = mTokens.get(position);
 
+
         if (token.isActive()) {
-            holder.mStatusImageButton.setImageResource(R.drawable.ic_alarm_black_24dp);
+            holder.mStatusTextView.setText("ACT");
+            holder.mStatusTextView.setTextColor(Color.parseColor("#1B5E20"));
         } else if (token.isCompleted()) {
-            holder.mStatusImageButton.setImageResource(R.drawable.ic_check_circle_black_24dp);
+            holder.mStatusTextView.setText("COM");
+            holder.mStatusTextView.setTextColor(Color.parseColor("#607D8B"));
         } else if (token.isCancelled()) {
-            holder.mStatusImageButton.setImageResource(R.drawable.ic_highlight_off_black_24dp);
+            holder.mStatusTextView.setText("CAN");
+            holder.mStatusTextView.setTextColor(Color.parseColor("#EF5350"));
         } else {
-            holder.mStatusImageButton.setImageResource(R.drawable.ic_schedule_black_24dp);
+            holder.mStatusTextView.setText("SCH");
+            holder.mStatusTextView.setTextColor(Color.parseColor("#673AB7"));
         }
+
+
+//        if (token.isActive()) {
+//            holder.mStatusImageButton.setImageResource(R.drawable.ic_alarm_black_24dp);
+//        } else if (token.isCompleted()) {
+//            holder.mStatusImageButton.setImageResource(R.drawable.ic_check_circle_black_24dp);
+//        } else if (token.isCancelled()) {
+//            holder.mStatusImageButton.setImageResource(R.drawable.ic_highlight_off_black_24dp);
+//        } else {
+//            holder.mStatusImageButton.setImageResource(R.drawable.ic_schedule_black_24dp);
+//        }
 
         holder.mTitle.setText(token.getTitle());
         holder.mDescription.setText(token.getDescription());
@@ -109,7 +126,8 @@ public class TokensAdapter extends RecyclerView.Adapter<TokensAdapter.ViewHolder
         protected ImageButton mTokenCancelButton;
         protected ImageButton mTokenCompleteButton;
 
-        protected ImageButton mStatusImageButton;
+        //        protected ImageButton mStatusImageButton;
+        protected TextView mStatusTextView;
 
         public ViewHolder(View view) {
             super(view);
@@ -121,7 +139,8 @@ public class TokensAdapter extends RecyclerView.Adapter<TokensAdapter.ViewHolder
             mTokenCancelButton = (ImageButton) view.findViewById(R.id.imageCancelButton);
             mTokenCompleteButton = (ImageButton) view.findViewById(R.id.imageCompleteButton);
 
-            mStatusImageButton = (ImageButton) view.findViewById(R.id.statusImageButton);
+//            mStatusImageButton = (ImageButton) view.findViewById(R.id.statusImageButton);
+            mStatusTextView = (TextView) view.findViewById(R.id.statusTextView);
         }
     }
 }

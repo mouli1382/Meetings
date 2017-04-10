@@ -25,7 +25,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.2"
-                android:padding="5dp">
+                android:padding="5dp"
+                android:layout_gravity="center">
 
                 <TextView
                     android:id="@+id/startTime"
@@ -66,8 +67,9 @@
                 android:id="@+id/detailsRelativeLL"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:padding="5dp">
+                android:layout_weight="0.6"
+                android:padding="5dp"
+                android:layout_gravity="center">
 
                 <TextView
                     android:id="@+id/title"
@@ -93,16 +95,29 @@
                 android:id="@+id/statusRelativeLL"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.1">
+                android:layout_weight="0.2"
+                android:layout_gravity="center">
 
-                <ImageButton
-                    android:id="@+id/statusImageButton"
+                <TextView
+                    android:id="@+id/statusTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:clickable="false"
-                    android:src="@drawable/ic_schedule_black_24dp" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                    android:textSize="16sp"
+                    android:textStyle="normal"
+                    android:typeface="sans"
+                    tools:text="COM" />
+
+                <!--<ImageButton-->
+                    <!--android:id="@+id/statusImageButton"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_margin="5dp"-->
+                    <!--android:background="?attr/selectableItemBackgroundBorderless"-->
+                    <!--android:clickable="false"-->
+                    <!--android:src="@drawable/ic_schedule_black_24dp" />-->
 
                 <!--<RadioButton-->
                 <!--android:id="@+id/statusRadioButton"-->

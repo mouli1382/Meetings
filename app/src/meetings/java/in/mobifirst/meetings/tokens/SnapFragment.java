@@ -35,7 +35,7 @@ import javax.inject.Inject;
 import in.mobifirst.meetings.R;
 import in.mobifirst.meetings.addedittoken.AddEditTokenActivity;
 import in.mobifirst.meetings.application.IQStoreApplication;
-import in.mobifirst.meetings.display.TokenDisplayService;
+//import in.mobifirst.meetings.display.TokenDisplayService;
 import in.mobifirst.meetings.fragment.BaseFragment;
 import in.mobifirst.meetings.model.Token;
 import in.mobifirst.meetings.receiver.TTLocalBroadcastManager;

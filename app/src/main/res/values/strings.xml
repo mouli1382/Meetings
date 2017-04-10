@@ -26,6 +26,13 @@
     <string name="invalid_description">Enter proper description</string>
     <string name="invalid_hour">Start time should be before End time.</string>
     <string name="invalid_minute">Start time cannot be same as End time</string>
-    <string name="meetings">Today\'s Agenda</string>
+    <string name="meetings">Today\'s Meetings</string>
     <string name="copyright">© 2016, MobiFirst Information Technologies</string>
+    <string name="display_no_meetings">Congratulations! You have completed all your scheduled Meetings.</string>
+    <string name="welcome_text">HEARTY WELCOME TO \nSRI NARA CHANDRA BABU NAIDU GARU,\nH\'BLE CHIEF MINISTER OF ANDHRA PRADESH</string>
+    <string name="welcome_text_old">Hearty Welcome to \n Sri. Nara Chandra Babu Naidu Garu, \n Hon\'ble Chief Minister \n of Andhra Pradesh</string>
+    <string name="meeting_in_progress">Meeting \n In progress</string>
+    <string name="meeting_completed">Meeting Completed</string>
+    <string name="meeting_cancelled">Meeting Cancelled</string>
+    <string name="meeting_scheduled">Meeting Scheduled</string>
 </resources>

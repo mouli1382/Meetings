@@ -1,6 +1,7 @@
 package in.mobifirst.meetings.database;
 
 import android.support.annotation.NonNull;
+import android.text.format.DateUtils;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -110,6 +111,7 @@ public class FirebaseDatabaseManager implements DatabaseManager {
             @Override
             public void call(final Subscriber<? super List<Snap>> subscriber) {
                 final Query query = mDatabaseReference
+                        .child("/")
                         .child(TOKENS_CHILD)
                         .orderByChild("storeId")
                         .equalTo(uId);
@@ -204,6 +206,7 @@ public class FirebaseDatabaseManager implements DatabaseManager {
             @Override
             public void call(final Subscriber<? super List<Token>> subscriber) {
                 final Query query = mDatabaseReference
+                        .child("/")
                         .child(TOKENS_CHILD)
                         .orderByChild("storeId")
                         .equalTo(uId);
@@ -230,19 +233,19 @@ public class FirebaseDatabaseManager implements DatabaseManager {
                                                     return new Long(token.getStartTime()).compareTo(token2.getStartTime());
                                                 }
                                             })
-//                                            .flatMap(new Func1<List<Token>, Observable<Token>>() {
-//                                                @Override
-//                                                public Observable<Token> call(List<Token> tokens) {
-//                                                    return Observable.from(tokens);
-//                                                }
-//                                            })
-//                                            .filter(new Func1<Token, Boolean>() {
-//                                                @Override
-//                                                public Boolean call(Token token) {
-//                                                    return token.getCounter() == currentCounter && !token.isCompleted();
-//                                                }
-//                                            })
-//                                            .toList()
+                                            .flatMap(new Func1<List<Token>, Observable<Token>>() {
+                                                @Override
+                                                public Observable<Token> call(List<Token> tokens) {
+                                                    return Observable.from(tokens);
+                                                }
+                                            })
+                                            .filter(new Func1<Token, Boolean>() {
+                                                @Override
+                                                public Boolean call(Token token) {
+                                                    return DateUtils.isToday(token.getTimestamp());
+                                                }
+                                            })
+                                            .toList()
                                             .subscribe(new Action1<List<Token>>() {
                                                 @Override
                                                 public void call(List<Token> tokenList) {
@@ -273,6 +276,7 @@ public class FirebaseDatabaseManager implements DatabaseManager {
 
     public void getTokenById(String tokenId, ValueEventListener valueEventListener) {
         DatabaseReference tokenRef = mDatabaseReference
+                .child("/")
                 .child(TOKENS_CHILD)
                 .child(tokenId);
         tokenRef.addListenerForSingleValueEvent(valueEventListener);
@@ -391,8 +395,12 @@ public class FirebaseDatabaseManager implements DatabaseManager {
 //            }
 //        });
 
-        String key = mDatabaseReference.child(TOKENS_CHILD)
-                .push().getKey();
+        String key = mDatabaseReference
+                .child("/")
+                .child(TOKENS_CHILD)
+                .push()
+                .getKey();
+
         final Token newToken = new Token(key, token.getStoreId(),
                 token.getTitle(),
                 token.getDescription(),
@@ -544,6 +552,7 @@ public class FirebaseDatabaseManager implements DatabaseManager {
 
     public void getStoreById(String storeId, ValueEventListener valueEventListener) {
         DatabaseReference storeRef = mDatabaseReference
+                .child("/")
                 .child(STORE_CHILD)
                 .child(storeId);
         storeRef.addListenerForSingleValueEvent(valueEventListener);
@@ -572,6 +581,7 @@ public class FirebaseDatabaseManager implements DatabaseManager {
 
     public void addStore(final String uid, final Store store, final Subscriber<? super String> subscriber) {
         mDatabaseReference
+                .child("/")
                 .child("store")
                 .child(uid)
                 .child("storeId").setValue(uid)
@@ -579,6 +589,7 @@ public class FirebaseDatabaseManager implements DatabaseManager {
                     @Override
                     public void onSuccess(Void aVoid) {
                         mDatabaseReference
+                                .child("/")
                                 .child("store")
                                 .child(uid)
                                 .child("name").setValue(store.getName())
@@ -586,6 +597,7 @@ public class FirebaseDatabaseManager implements DatabaseManager {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         mDatabaseReference
+                                                .child("/")
                                                 .child("store")
                                                 .child(uid)
                                                 .child("area").setValue(store.getArea())
@@ -593,6 +605,7 @@ public class FirebaseDatabaseManager implements DatabaseManager {
                                                     @Override
                                                     public void onSuccess(Void aVoid) {
                                                         mDatabaseReference
+                                                                .child("/")
                                                                 .child("store")
                                                                 .child(uid)
                                                                 .child("website").setValue(store.getWebsite())
@@ -600,6 +613,7 @@ public class FirebaseDatabaseManager implements DatabaseManager {
                                                                     @Override
                                                                     public void onSuccess(Void aVoid) {
                                                                         mDatabaseReference
+                                                                                .child("/")
                                                                                 .child("store")
                                                                                 .child(uid)
                                                                                 .child("logoUrl").setValue(store.getLogoUrl())
@@ -607,6 +621,7 @@ public class FirebaseDatabaseManager implements DatabaseManager {
                                                                                     @Override
                                                                                     public void onSuccess(Void aVoid) {
                                                                                         mDatabaseReference
+                                                                                                .child("/")
                                                                                                 .child("store")
                                                                                                 .child(uid)
                                                                                                 .child("numberOfCounters").setValue(/*store.getNumberOfCounters()*/1)
@@ -798,10 +813,12 @@ public class FirebaseDatabaseManager implements DatabaseManager {
         if (token.isCompleted()) {
             //Update the token completion time
             mDatabaseReference
+                    .child("/")
                     .child(TOKENS_CHILD)
                     .child(token.getuId())
                     .setValue(token);
             mDatabaseReference
+                    .child("/")
                     .child(TOKENS_CHILD)
                     .child(token.getuId())
                     .child("tokenFinishTime")
@@ -844,16 +861,19 @@ public class FirebaseDatabaseManager implements DatabaseManager {
                 }
             };
             mDatabaseReference
+                    .child("/")
                     .child(TOKENS_CHILD)
                     .child(token.getuId()).addListenerForSingleValueEvent(completionListener);
 
         } else if (token.isCancelled()) {
             //Update the token completion time
             mDatabaseReference
+                    .child("/")
                     .child(TOKENS_CHILD)
                     .child(token.getuId())
                     .setValue(token);
             mDatabaseReference
+                    .child("/")
                     .child(TOKENS_CHILD)
                     .child(token.getuId())
                     .child("tokenCancelledTime")
@@ -896,15 +916,18 @@ public class FirebaseDatabaseManager implements DatabaseManager {
                 }
             };
             mDatabaseReference
+                    .child("/")
                     .child(TOKENS_CHILD)
                     .child(token.getuId()).addListenerForSingleValueEvent(completionListener);
 
         } else {
             mDatabaseReference
+                    .child("/")
                     .child(TOKENS_CHILD)
                     .child(token.getuId())
                     .setValue(token);
             mDatabaseReference
+                    .child("/")
                     .child(TOKENS_CHILD)
                     .child(token.getuId())
                     .child("activatedTokenTime")
@@ -944,6 +967,7 @@ public class FirebaseDatabaseManager implements DatabaseManager {
                 }
             };
             mDatabaseReference
+                    .child("/")
                     .child(TOKENS_CHILD)
                     .child(token.getuId()).addListenerForSingleValueEvent(postListener);
         }

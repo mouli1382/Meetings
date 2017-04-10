@@ -6,8 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_margin="5dp"
-    card_view:cardCornerRadius="5dp"
-    card_view:cardElevation="5dp">
+    card_view:cardCornerRadius="5dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -25,7 +24,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.2"
-                android:padding="5dp">
+                android:padding="5dp"
+                android:layout_gravity="center">
 
                 <TextView
                     android:id="@+id/startTime"
@@ -34,7 +34,7 @@
                     android:layout_centerHorizontal="true"
                     android:padding="5dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                    android:textColor="@color/common_google_signin_btn_text_dark_default"
                     android:textSize="16sp"
                     tools:text="13:45" />
 
@@ -45,6 +45,7 @@
                     android:layout_below="@+id/startTime"
                     android:layout_centerHorizontal="true"
                     android:padding="5dp"
+                    android:textColor="@color/common_google_signin_btn_text_dark_default"
                     android:text="to"
                     android:textSize="12sp" />
 
@@ -56,7 +57,7 @@
                     android:layout_centerHorizontal="true"
                     android:padding="5dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                    android:textColor="@color/common_google_signin_btn_text_dark_default"
                     android:textSize="16sp"
                     tools:text="14:25" />
 
@@ -67,7 +68,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.6"
-                android:padding="5dp">
+                android:padding="5dp"
+                android:layout_gravity="center">
 
                 <TextView
                     android:id="@+id/title"
@@ -75,8 +77,9 @@
                     android:layout_height="wrap_content"
                     android:gravity="clip_vertical"
                     android:padding="5dp"
-                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                    android:textSize="16sp"
+                    android:textColor="@color/common_google_signin_btn_text_dark_default"
+                    android:textStyle="bold"
+                    android:textSize="24sp"
                     tools:text="Meeting with Tagtree" />
 
                 <TextView
@@ -84,7 +87,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/title"
+                    android:textColor="@color/common_google_signin_btn_text_dark_default"
                     android:padding="5dp"
+                    android:textStyle="italic"
                     tools:text="Discuss the possibility of deploying TagTree app at various FP shops in Visakhapatnam disctrict." />
 
             </RelativeLayout>
@@ -102,10 +107,12 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                    android:textColor="@color/common_google_signin_btn_text_dark_default"
                     android:textSize="18sp"
+                    android:textStyle="normal"
                     android:typeface="monospace"
-                    tools:text="COMPLETED" />
+                    android:gravity="center"
+                    tools:text="@string/meeting_scheduled" />
 
             </RelativeLayout>
         </LinearLayout>
