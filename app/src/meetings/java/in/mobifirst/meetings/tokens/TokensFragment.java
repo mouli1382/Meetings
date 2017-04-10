@@ -1,5 +1,6 @@
 package in.mobifirst.meetings.tokens;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -25,12 +26,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -44,6 +47,7 @@ import in.mobifirst.meetings.model.Token;
 import in.mobifirst.meetings.preferences.IQSharedPreferences;
 import in.mobifirst.meetings.receiver.TTLocalBroadcastManager;
 import in.mobifirst.meetings.util.NetworkConnectionUtils;
+import in.mobifirst.meetings.util.TimeUtils;
 
 public class TokensFragment extends BaseFragment implements TokensContract.View {
 
@@ -329,7 +333,7 @@ public class TokensFragment extends BaseFragment implements TokensContract.View 
             }
         });
 
-        confirmationDialogFragment.show(getFragmentManager(), "dialog");
+        confirmationDialogFragment.show(getActivity().getSupportFragmentManager(), "dialog");
     }
 
     public static class ConfirmationDialogFragment extends DialogFragment {

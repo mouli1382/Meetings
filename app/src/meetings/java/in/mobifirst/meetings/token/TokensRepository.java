@@ -28,6 +28,11 @@ public class TokensRepository implements TokensDataSource {
     }
 
     @Override
+    public Observable<List<Token>> getTokens(long date) {
+        return mTokensDataSource.getTokens(date);
+    }
+
+    @Override
     public Observable<List<Snap>> getSnaps() {
         return mTokensDataSource.getSnaps();
     }

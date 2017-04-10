@@ -1,6 +1,7 @@
 package in.mobifirst.meetings.addedittoken;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.BroadcastReceiver;
@@ -20,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
@@ -51,6 +53,7 @@ public class AddEditTokenFragment extends BaseFragment implements AddEditTokenCo
 //    private TextInputLayout mDescriptionInputLayout;
 //    private TextInputEditText mDescriptionEditText;
 
+    private Button mDateButton;
     private Button mStartTimeButton;
     private Button mEndTimeButton;
 
@@ -62,6 +65,9 @@ public class AddEditTokenFragment extends BaseFragment implements AddEditTokenCo
 
     private long mStartTime;
     private long mEndTime;
+
+    private String mDateString;
+    private long mDate;
 
     public static AddEditTokenFragment newInstance() {
         return new AddEditTokenFragment();
@@ -131,11 +137,54 @@ public class AddEditTokenFragment extends BaseFragment implements AddEditTokenCo
                         //ToDo hardcoding to IND country code as of now.
                         mPresenter.addNewMeeting(mTitleEditText.getText().toString()
                                 , /*mDescriptionEditText.getText().toString()*/""
-                                , mStartTime, mEndTime);
+                                , mStartTime, mEndTime, mDate);
                     }
                 }
             }
         });
+    }
+
+    public void showDatePickerDialog(final View v) {
+        DatePickerDialogFragment datePickerDialogFragment = new DatePickerDialogFragment();
+        datePickerDialogFragment.setiDatePickerCallback(new DatePickerDialogFragment.IDatePickerCallback() {
+            @Override
+            public void onDatePicked(int year, int month, int day) {
+                final Calendar c = Calendar.getInstance();
+                c.set(year, month, day);
+                mDate = c.getTimeInMillis();
+                mDateString = TimeUtils.getDate(mDate);
+                ((Button) v).setText(mDateString);
+            }
+        });
+        datePickerDialogFragment.show(getActivity().getSupportFragmentManager(), "datePicker");
+    }
+
+    public static class DatePickerDialogFragment extends DialogFragment
+            implements DatePickerDialog.OnDateSetListener {
+        private IDatePickerCallback iDatePickerCallback;
+
+        interface IDatePickerCallback {
+            void onDatePicked(int year, int month, int day);
+        }
+
+        public void setiDatePickerCallback(IDatePickerCallback iDatePickerCallback) {
+            this.iDatePickerCallback = iDatePickerCallback;
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+
+            // Create a new instance of DatePickerDialog and return it
+            return new DatePickerDialog(getActivity(), this, year, month, day);
+        }
+
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            iDatePickerCallback.onDatePicked(year, month, day);
+        }
     }
 
     public static class TimePickerFragment extends DialogFragment
@@ -202,6 +251,14 @@ public class AddEditTokenFragment extends BaseFragment implements AddEditTokenCo
 //        mDescriptionEditText = (TextInputEditText) root.findViewById(R.id.descriptionInputEditText);
 //        mDescriptionInputLayout = (TextInputLayout) root.findViewById(R.id.descriptionInputLayout);
 
+        mDateButton = (Button) root.findViewById(R.id.date);
+        mDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog(v);
+            }
+        });
+
         mStartTimeButton = (Button) root.findViewById(R.id.startTime);
         mStartTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -239,7 +296,12 @@ public class AddEditTokenFragment extends BaseFragment implements AddEditTokenCo
 //            mDescriptionInputLayout.setError("");
 //        }
 
-        if (mStartHour == 0 || mEndHour == 0 || mStartHour > mEndHour) {
+        if (TextUtils.isEmpty(mDateString)) {
+            Snackbar.make(getView(), getString(R.string.invalid_date), Snackbar.LENGTH_LONG).show();
+            return false;
+        }
+
+        if (mStartHour > mEndHour) {
             Snackbar.make(getView(), getString(R.string.invalid_hour), Snackbar.LENGTH_LONG).show();
             return false;
         }
@@ -281,6 +343,11 @@ public class AddEditTokenFragment extends BaseFragment implements AddEditTokenCo
         if (isAdded() && token != null) {
             mTitleEditText.setText(token.getTitle());
 //            mDescriptionEditText.setText("");
+
+            mDate = token.getDate();
+            mDateString = TimeUtils.getDate(mDate);
+            mDateButton.setText(mDateString);
+
             mStartTime = token.getStartTime();
             mStartTimeButton.setText(TimeUtils.getHourMinute(mStartTime));
             Calendar c = Calendar.getInstance();

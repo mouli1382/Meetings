@@ -38,6 +38,7 @@ import in.mobifirst.meetings.model.Store;
 import in.mobifirst.meetings.model.Token;
 import in.mobifirst.meetings.preferences.IQSharedPreferences;
 import in.mobifirst.meetings.tokens.Snap;
+import in.mobifirst.meetings.util.TimeUtils;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Action1;
@@ -205,6 +206,80 @@ public class FirebaseDatabaseManager implements DatabaseManager {
     }
 
     //ToDo limit by date and status.
+    public Observable<List<Token>> getAllTokens(final String uId, final long date) {
+        return rx.Observable.create(new Observable.OnSubscribe<List<Token>>() {
+            @Override
+            public void call(final Subscriber<? super List<Token>> subscriber) {
+                final Query query = mDatabaseReference
+                        .child("/")
+                        .child(TOKENS_CHILD)
+                        .orderByChild("storeId")
+                        .equalTo(uId);
+
+                final ValueEventListener listener = query.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Log.e(TAG, "onDataChange --> " + subscriber.toString());
+                        if (!subscriber.isUnsubscribed()) {
+                            if (dataSnapshot != null) {
+                                HashMap<String, Token> tokens = dataSnapshot.getValue(new GenericTypeIndicator<HashMap<String, Token>>() {
+                                });
+                                if (tokens != null) {
+                                    Observable.just(new ArrayList<>(tokens.values()))
+                                            .flatMap(new Func1<List<Token>, Observable<Token>>() {
+                                                @Override
+                                                public Observable<Token> call(List<Token> tokens) {
+                                                    return Observable.from(tokens);
+                                                }
+                                            })
+                                            .toSortedList(new Func2<Token, Token, Integer>() {
+                                                @Override
+                                                public Integer call(Token token, Token token2) {
+                                                    return new Long(token.getStartTime()).compareTo(token2.getStartTime());
+                                                }
+                                            })
+                                            .flatMap(new Func1<List<Token>, Observable<Token>>() {
+                                                @Override
+                                                public Observable<Token> call(List<Token> tokens) {
+                                                    return Observable.from(tokens);
+                                                }
+                                            })
+                                            .filter(new Func1<Token, Boolean>() {
+                                                @Override
+                                                public Boolean call(Token token) {
+                                                    return TimeUtils.getDate(token.getDate())
+                                                            .equalsIgnoreCase(TimeUtils.getDate(date));
+                                                }
+                                            })
+                                            .toList()
+                                            .subscribe(new Action1<List<Token>>() {
+                                                @Override
+                                                public void call(List<Token> tokenList) {
+                                                    subscriber.onNext(tokenList);
+                                                }
+                                            });
+                                } else {
+                                    FirebaseCrash.report(new Exception("Empty Tokens"));
+                                    subscriber.onNext(null);
+                                }
+                            } else {
+                                FirebaseCrash.report(new Exception("Empty Tokens"));
+                                subscriber.onNext(null);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.e(TAG, "[fetch All Tokens] onCancelled:" + databaseError);
+                        subscriber.onError(new Exception("Empty Tokens."));
+                        FirebaseCrash.report(new Exception("Empty Tokens"));
+                    }
+                });
+            }
+        });
+    }
+
     public Observable<List<Token>> getAllTokens(final String uId, final int currentCounter) {
         return rx.Observable.create(new Observable.OnSubscribe<List<Token>>() {
             @Override
@@ -246,7 +321,7 @@ public class FirebaseDatabaseManager implements DatabaseManager {
                                             .filter(new Func1<Token, Boolean>() {
                                                 @Override
                                                 public Boolean call(Token token) {
-                                                    return DateUtils.isToday(token.getTimestamp());
+                                                    return DateUtils.isToday(token.getDate());
                                                 }
                                             })
                                             .toList()
@@ -462,7 +537,7 @@ public class FirebaseDatabaseManager implements DatabaseManager {
                 token.getTitle(),
                 token.getDescription(),
                 token.getStartTime(),
-                token.getEndTime());
+                token.getEndTime(), token.getDate());
 
         mDatabaseReference
                 .child("/")

@@ -24,7 +24,7 @@ public interface AddEditTokenContract {
 
     interface Presenter extends BasePresenter {
 
-        void addNewMeeting(String title, String description, long startTime, long endTime);
+        void addNewMeeting(String title, String description, long startTime, long endTime, long mDateString);
 
         void fetchMeetingDetails();
     }

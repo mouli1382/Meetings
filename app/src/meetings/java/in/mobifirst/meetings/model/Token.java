@@ -33,6 +33,7 @@ public class Token implements Parcelable {
     private String description;
     private long startTime;
     private long endTime;
+    private long date;
 
     public String getTitle() {
         return title;
@@ -66,19 +67,29 @@ public class Token implements Parcelable {
         this.endTime = endTime;
     }
 
+
+    public long getDate() {
+        return date;
+    }
+
+    public void setDate(long date) {
+        this.date = date;
+    }
+
     public enum Status {
         ISSUED, READY, CANCELLED, COMPLETED
     }
 
     ;
 
-    public Token(String uId, String storeId, String title, String description, long startTime, long endTime) {
+    public Token(String uId, String storeId, String title, String description, long startTime, long endTime, long date) {
         this.uId = uId;
         this.storeId = storeId;
         this.title = title;
         this.description = description;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.date = date;
         this.status = Status.ISSUED.ordinal();
         this.buzzCount = 0;
     }
@@ -257,6 +268,47 @@ public class Token implements Parcelable {
 //        return TextUtils.isEmpty(phoneNumber);
 //    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Token)) return false;
+
+        Token token = (Token) o;
+
+        if (getTimestamp() != token.getTimestamp()) return false;
+        if (getStatus() != token.getStatus()) return false;
+        if (getBuzzCount() != token.getBuzzCount()) return false;
+        if (getActivatedTokenTime() != token.getActivatedTokenTime()) return false;
+        if (getTokenFinishTime() != token.getTokenFinishTime()) return false;
+        if (getTokenCancelledTime() != token.getTokenCancelledTime()) return false;
+        if (getStartTime() != token.getStartTime()) return false;
+        if (getEndTime() != token.getEndTime()) return false;
+        if (getDate() != token.getDate()) return false;
+        if (!getuId().equals(token.getuId())) return false;
+        if (!getStoreId().equals(token.getStoreId())) return false;
+        if (!getTitle().equals(token.getTitle())) return false;
+        return getDescription() != null ? getDescription().equals(token.getDescription()) : token.getDescription() == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getuId().hashCode();
+        result = 31 * result + getStoreId().hashCode();
+        result = 31 * result + (int) (getTimestamp() ^ (getTimestamp() >>> 32));
+        result = 31 * result + getStatus();
+        result = 31 * result + getBuzzCount();
+        result = 31 * result + (int) (getActivatedTokenTime() ^ (getActivatedTokenTime() >>> 32));
+        result = 31 * result + (int) (getTokenFinishTime() ^ (getTokenFinishTime() >>> 32));
+        result = 31 * result + (int) (getTokenCancelledTime() ^ (getTokenCancelledTime() >>> 32));
+        result = 31 * result + getTitle().hashCode();
+        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
+        result = 31 * result + (int) (getStartTime() ^ (getStartTime() >>> 32));
+        result = 31 * result + (int) (getEndTime() ^ (getEndTime() >>> 32));
+        result = 31 * result + (int) (getDate() ^ (getDate() >>> 32));
+        return result;
+    }
+
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
@@ -280,87 +332,10 @@ public class Token implements Parcelable {
         result.put("description", description);
         result.put("startTime", startTime);
         result.put("endTime", endTime);
+        result.put("date", date);
 //        result.put("mappingId", mappingId);
         return result;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Token)) return false;
-
-        Token token = (Token) o;
-
-        if (getTimestamp() != token.getTimestamp()) return false;
-        if (getStatus() != token.getStatus()) return false;
-        if (getBuzzCount() != token.getBuzzCount()) return false;
-        if (getActivatedTokenTime() != token.getActivatedTokenTime()) return false;
-        if (getTokenFinishTime() != token.getTokenFinishTime()) return false;
-        if (getTokenCancelledTime() != token.getTokenCancelledTime()) return false;
-        if (getStartTime() != token.getStartTime()) return false;
-        if (getEndTime() != token.getEndTime()) return false;
-        if (!getuId().equals(token.getuId())) return false;
-        if (!getStoreId().equals(token.getStoreId())) return false;
-        if (getTitle() != null ? !getTitle().equals(token.getTitle()) : token.getTitle() != null)
-            return false;
-        return getDescription() != null ? getDescription().equals(token.getDescription()) : token.getDescription() == null;
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = getuId().hashCode();
-        result = 31 * result + getStoreId().hashCode();
-        result = 31 * result + (int) (getTimestamp() ^ (getTimestamp() >>> 32));
-        result = 31 * result + getStatus();
-        result = 31 * result + getBuzzCount();
-        result = 31 * result + (int) (getActivatedTokenTime() ^ (getActivatedTokenTime() >>> 32));
-        result = 31 * result + (int) (getTokenFinishTime() ^ (getTokenFinishTime() >>> 32));
-        result = 31 * result + (int) (getTokenCancelledTime() ^ (getTokenCancelledTime() >>> 32));
-        result = 31 * result + (getTitle() != null ? getTitle().hashCode() : 0);
-        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
-        result = 31 * result + (int) (getStartTime() ^ (getStartTime() >>> 32));
-        result = 31 * result + (int) (getEndTime() ^ (getEndTime() >>> 32));
-        return result;
-    }
-
-    //    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (!(o instanceof Token)) return false;
-//
-//        Token token = (Token) o;
-//
-//        if (!getTitle().equalsIgnoreCase(token.getTitle())) return false;
-//        if (!getDescription().equalsIgnoreCase(token.getDescription())) return false;
-//
-////        if (getTokenNumber() != token.getTokenNumber()) return false;
-//        if (getStatus() != token.getStatus()) return false;
-//        if (getBuzzCount() != token.getBuzzCount()) return false;
-//        if (!getuId().equals(token.getuId())) return false;
-//        if (!getStoreId().equals(token.getStoreId())) return false;
-////        if (!getPhoneNumber().equals(token.getPhoneNumber())) return false;
-////        if (!getAreaName().equals(token.getAreaName())) return false;
-//        if (getActivatedTokenTime() != (token.getActivatedTokenTime())) return false;
-////        if (!getMappingId().equals(token.getMappingId())) return false;
-//        return getTimestamp() != (token.getTimestamp());
-//
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        int result = getuId().hashCode();
-//        result = 31 * result + getStoreId().hashCode();
-////        result = 31 * result + getPhoneNumber().hashCode();
-////        result = 31 * result + (int) (getTokenNumber() ^ (getTokenNumber() >>> 32));
-//        result = 31 * result + (int) (getTimestamp() ^ (getTimestamp() >>> 32));
-//        result = 31 * result + (int) (getActivatedTokenTime() ^ (getActivatedTokenTime() >>> 32));
-//        result = 31 * result + getStatus();
-//        result = 31 * result + getBuzzCount();
-////        result = 31 * result + getAreaName().hashCode();
-////        result = 31 * result + getMappingId().hashCode();
-//        return result;
-//    }
 
     @Override
     public int describeContents() {
@@ -388,6 +363,7 @@ public class Token implements Parcelable {
         parcel.writeString(description);
         parcel.writeLong(startTime);
         parcel.writeLong(endTime);
+        parcel.writeLong(date);
 //        parcel.writeString(userName);
     }
 
@@ -411,6 +387,7 @@ public class Token implements Parcelable {
         description = in.readString();
         startTime = in.readLong();
         endTime = in.readLong();
+        date = in.readLong();
 //        userName = in.readString();
     }
 

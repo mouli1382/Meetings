@@ -58,12 +58,13 @@ public class AddEditTokenPresenter implements AddEditTokenContract.Presenter {
     }
 
     @Override
-    public void addNewMeeting(String title, String description, long startTime, long endTime) {
+    public void addNewMeeting(String title, String description, long startTime, long endTime, long date) {
         Token token = new Token();
         token.setTitle(title);
         token.setDescription(description);
         token.setStartTime(startTime);
         token.setEndTime(endTime);
+        token.setDate(date);
         if (TextUtils.isEmpty(mTokenId)) {
             token.setStatus(Token.Status.ISSUED.ordinal());
             token.setBuzzCount(0);

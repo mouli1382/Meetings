@@ -13,6 +13,8 @@ public interface TokensDataSource {
 
     Observable<List<Token>> getTokens(int mCurrentCounter);
 
+    Observable<List<Token>> getTokens(long date);
+
     Observable<List<Snap>> getSnaps();
 
     Observable<Token> getToken(@NonNull String tokenId);

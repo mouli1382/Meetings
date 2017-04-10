@@ -67,20 +67,22 @@
         </android.support.design.widget.TextInputLayout>
 
         <Button
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/date" />
+
+        <Button
             android:id="@+id/startTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/from_time"
-            android:onClick="showTimePickerDialog"/>
+            android:text="@string/from_time" />
 
         <Button
             android:id="@+id/endTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/to_time"
-            android:onClick="showTimePickerDialog"/>
+            android:text="@string/to_time" />
 
     </LinearLayout>
 </ScrollView>
