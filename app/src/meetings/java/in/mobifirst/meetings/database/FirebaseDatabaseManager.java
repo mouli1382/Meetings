@@ -1,6 +1,7 @@
 package in.mobifirst.meetings.database;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Log;
 
@@ -395,11 +396,16 @@ public class FirebaseDatabaseManager implements DatabaseManager {
 //            }
 //        });
 
-        String key = mDatabaseReference
-                .child("/")
-                .child(TOKENS_CHILD)
-                .push()
-                .getKey();
+        String key;
+        if (TextUtils.isEmpty(token.getuId())) {
+            key = mDatabaseReference
+                    .child("/")
+                    .child(TOKENS_CHILD)
+                    .push()
+                    .getKey();
+        } else {
+            key = token.getuId();
+        }
 
         final Token newToken = new Token(key, token.getStoreId(),
                 token.getTitle(),

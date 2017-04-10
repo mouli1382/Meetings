@@ -106,6 +106,14 @@ public class TokensAdapter extends RecyclerView.Adapter<TokensAdapter.ViewHolder
             }
         });
 
+        holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                mTokenItemListener.onTokenClick(token);
+                return true;
+            }
+        });
+
         holder.mStartTime.setText(TimeUtils.getHourMinute(token.getStartTime()));
         holder.mEndTime.setText(TimeUtils.getHourMinute(token.getEndTime()));
     }
@@ -128,9 +136,11 @@ public class TokensAdapter extends RecyclerView.Adapter<TokensAdapter.ViewHolder
 
         //        protected ImageButton mStatusImageButton;
         protected TextView mStatusTextView;
+        protected View mView;
 
         public ViewHolder(View view) {
             super(view);
+            mView = view;
             mTitle = (TextView) view.findViewById(R.id.title);
             mDescription = (TextView) view.findViewById(R.id.description);
             mStartTime = (TextView) view.findViewById(R.id.startTime);

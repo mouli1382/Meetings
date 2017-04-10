@@ -37,4 +37,5 @@
     <string name="meeting_completed">Meeting Completed</string>
     <string name="meeting_cancelled">Meeting Cancelled</string>
     <string name="meeting_scheduled">Meeting Scheduled</string>
+    <string name="cannot_edit_token">You can edit only SCHEDULED meetings</string>
 </resources>

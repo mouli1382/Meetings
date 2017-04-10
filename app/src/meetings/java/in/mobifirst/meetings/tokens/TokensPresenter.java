@@ -9,9 +9,9 @@ import java.util.List;
 import javax.inject.Inject;
 
 import in.mobifirst.meetings.addedittoken.AddEditTokenActivity;
+import in.mobifirst.meetings.model.Token;
 import in.mobifirst.meetings.token.TokensDataSource;
 import in.mobifirst.meetings.token.TokensRepository;
-import in.mobifirst.meetings.model.Token;
 import rx.Observer;
 import rx.Subscriber;
 import rx.Subscription;
@@ -72,6 +72,11 @@ final class TokensPresenter implements TokensContract.Presenter {
     public void result(int requestCode, int resultCode) {
         // If a Token was successfully added, show snackbar
         if (AddEditTokenActivity.REQUEST_ADD_TOKEN == requestCode
+                && Activity.RESULT_OK == resultCode) {
+            mTokensView.showSuccessfullySavedMessage();
+        }
+
+        if (AddEditTokenActivity.REQUEST_EDIT_TOKEN == requestCode
                 && Activity.RESULT_OK == resultCode) {
             mTokensView.showSuccessfullySavedMessage();
         }
@@ -313,7 +318,11 @@ final class TokensPresenter implements TokensContract.Presenter {
 
     @Override
     public void openTokenDetails(@NonNull Token requestedToken) {
-//        mTokensView.showTokenDetailsUi(requestedToken.getId());
+        if (requestedToken.isScheduled()) {
+            mTokensView.showTokenDetailsUi(requestedToken.getuId());
+        } else {
+            mTokensView.showCantEditTokenMessage();
+        }
     }
 
     @Override

@@ -295,6 +295,11 @@ public class TokensFragment extends BaseFragment implements TokensContract.View 
         popup.show();
     }
 
+    @Override
+    public void showCantEditTokenMessage() {
+        showMessage(getString(R.string.cannot_edit_token));
+    }
+
     /**
      * Listener for clicks on Tokens in the ListView.
      */
@@ -464,11 +469,9 @@ public class TokensFragment extends BaseFragment implements TokensContract.View 
 
     @Override
     public void showTokenDetailsUi(String TokenId) {
-        // in it's own Activity, since it makes more sense that way and it gives us the flexibility
-        // to show some Intent stubbing.
-//        Intent intent = new Intent(getContext(), TokenDetailActivity.class);
-//        intent.putExtra(TokenDetailActivity.EXTRA_Token_ID, TokenId);
-//        startActivity(intent);
+        Intent intent = new Intent(getContext(), AddEditTokenActivity.class);
+        intent.putExtra(AddEditTokenActivity.INTENT_EXTRA_TOKEN_ID, TokenId);
+        startActivityForResult(intent, AddEditTokenActivity.REQUEST_EDIT_TOKEN);
     }
 
     @Override

@@ -29,9 +29,11 @@ import javax.inject.Inject;
 import in.mobifirst.meetings.R;
 import in.mobifirst.meetings.application.IQStoreApplication;
 import in.mobifirst.meetings.fragment.BaseFragment;
+import in.mobifirst.meetings.model.Token;
 import in.mobifirst.meetings.preferences.IQSharedPreferences;
 import in.mobifirst.meetings.receiver.TTLocalBroadcastManager;
 import in.mobifirst.meetings.util.NetworkConnectionUtils;
+import in.mobifirst.meetings.util.TimeUtils;
 
 
 public class AddEditTokenFragment extends BaseFragment implements AddEditTokenContract.View {
@@ -46,8 +48,8 @@ public class AddEditTokenFragment extends BaseFragment implements AddEditTokenCo
 
     private TextInputLayout mTitleInputLayout;
     private TextInputEditText mTitleEditText;
-    private TextInputLayout mDescriptionInputLayout;
-    private TextInputEditText mDescriptionEditText;
+//    private TextInputLayout mDescriptionInputLayout;
+//    private TextInputEditText mDescriptionEditText;
 
     private Button mStartTimeButton;
     private Button mEndTimeButton;
@@ -70,6 +72,8 @@ public class AddEditTokenFragment extends BaseFragment implements AddEditTokenCo
         super.onCreate(savedInstanceState);
         ((IQStoreApplication) getActivity().getApplicationContext()).getApplicationComponent()
                 .inject(this);
+
+        mPresenter.subscribe();
     }
 
     private BroadcastReceiver mNetworkBroadcastReceiver = new BroadcastReceiver() {
@@ -79,6 +83,8 @@ public class AddEditTokenFragment extends BaseFragment implements AddEditTokenCo
 
             if (!isConnected && getView() != null) {
                 showNetworkError(getView());
+            } else {
+                mPresenter.subscribe();
             }
         }
     };
@@ -101,6 +107,12 @@ public class AddEditTokenFragment extends BaseFragment implements AddEditTokenCo
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.unsubscribe();
+    }
+
+    @Override
     public void setPresenter(@NonNull AddEditTokenContract.Presenter presenter) {
         mPresenter = presenter;
     }
@@ -111,7 +123,6 @@ public class AddEditTokenFragment extends BaseFragment implements AddEditTokenCo
 
         FloatingActionButton fab =
                 (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        fab.setImageResource(R.drawable.ic_done);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -188,8 +199,8 @@ public class AddEditTokenFragment extends BaseFragment implements AddEditTokenCo
         mTitleEditText = (TextInputEditText) root.findViewById(R.id.titleInputEditText);
         mTitleInputLayout = (TextInputLayout) root.findViewById(R.id.titleInputLayout);
 
-        mDescriptionEditText = (TextInputEditText) root.findViewById(R.id.descriptionInputEditText);
-        mDescriptionInputLayout = (TextInputLayout) root.findViewById(R.id.descriptionInputLayout);
+//        mDescriptionEditText = (TextInputEditText) root.findViewById(R.id.descriptionInputEditText);
+//        mDescriptionInputLayout = (TextInputLayout) root.findViewById(R.id.descriptionInputLayout);
 
         mStartTimeButton = (Button) root.findViewById(R.id.startTime);
         mStartTimeButton.setOnClickListener(new View.OnClickListener() {
@@ -263,5 +274,25 @@ public class AddEditTokenFragment extends BaseFragment implements AddEditTokenCo
     @Override
     public boolean isActive() {
         return isAdded();
+    }
+
+    @Override
+    public void populateMeeting(Token token) {
+        if (isAdded() && token != null) {
+            mTitleEditText.setText(token.getTitle());
+//            mDescriptionEditText.setText("");
+            mStartTime = token.getStartTime();
+            mStartTimeButton.setText(TimeUtils.getHourMinute(mStartTime));
+            Calendar c = Calendar.getInstance();
+            c.setTimeInMillis(mStartTime);
+            mStartHour = c.get(Calendar.HOUR_OF_DAY);
+            mStartMinute = c.get(Calendar.MINUTE);
+
+            mEndTime = token.getEndTime();
+            mEndTimeButton.setText(TimeUtils.getHourMinute(mEndTime));
+            c.setTimeInMillis(mEndTime);
+            mEndHour = c.get(Calendar.HOUR_OF_DAY);
+            mEndMinute = c.get(Calendar.MINUTE);
+        }
     }
 }

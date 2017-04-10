@@ -1,6 +1,7 @@
 package in.mobifirst.meetings.addedittoken;
 
 
+import in.mobifirst.meetings.model.Token;
 import in.mobifirst.meetings.mvp.BasePresenter;
 import in.mobifirst.meetings.mvp.BaseView;
 
@@ -17,12 +18,14 @@ public interface AddEditTokenContract {
 //        void setDescription(String description);
 
         boolean isActive();
+
+        void populateMeeting(Token token);
     }
 
     interface Presenter extends BasePresenter {
 
         void addNewMeeting(String title, String description, long startTime, long endTime);
 
-//        void populateToken();
+        void fetchMeetingDetails();
     }
 }

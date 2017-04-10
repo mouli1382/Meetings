@@ -9,7 +9,7 @@
 
     <!-- Remove unused -->
     <string name="add_token">New Token</string>
-    <string name="edit_token">Edit Token</string>
+    <string name="edit_token">Edit Meeting</string>
     <string name="token_marked_complete">token marked complete</string>
     <string name="token_marked_active">token marked active</string>
     <string name="token_marked_cancel">token marked cancel</string>
@@ -79,7 +79,7 @@
     <string name="upload">UPLOAD</string>
     <string name="empty_store_counters">Empty Counters</string>
     <string name="invalid_store_counters">Enter between 1 - 100</string>
-    <string name="issue_token">Schedule a Meeting</string>
+    <string name="issue_token">Create Meeting</string>
     <string name="failed_fetch_store">Fetching Store details failed. Try again!</string>
     <string name="title_activity_navigation_drawer">NavigationDrawerActivity</string>
 

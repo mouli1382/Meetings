@@ -18,7 +18,7 @@ public class Token implements Parcelable {
     private long timestamp;
     private int status;
     private int buzzCount;
-//    private String senderPic;
+    //    private String senderPic;
 //    private String senderName;
 //    private String areaName;
 //    private int counter;
@@ -245,6 +245,11 @@ public class Token implements Parcelable {
     @Exclude
     public boolean isActive() {
         return status == Status.READY.ordinal();
+    }
+
+    @Exclude
+    public boolean isScheduled() {
+        return status == Status.ISSUED.ordinal();
     }
 
 //    @Exclude

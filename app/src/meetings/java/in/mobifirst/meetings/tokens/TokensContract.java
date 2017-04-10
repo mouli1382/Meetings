@@ -53,6 +53,8 @@ public interface TokensContract {
         boolean isActive();
 
         void showFilteringPopUpMenu();
+
+        void showCantEditTokenMessage();
     }
 
     interface Presenter extends BasePresenter {

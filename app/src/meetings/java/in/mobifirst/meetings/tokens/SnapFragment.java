@@ -254,6 +254,11 @@ public class SnapFragment extends BaseFragment implements TokensContract.View {
         popup.show();
     }
 
+    @Override
+    public void showCantEditTokenMessage() {
+
+    }
+
     /**
      * Listener for clicks on Tokens in the ListView.
      */
