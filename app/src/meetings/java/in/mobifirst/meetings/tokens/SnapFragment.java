@@ -31,11 +31,12 @@ import javax.inject.Inject;
 import in.mobifirst.meetings.R;
 import in.mobifirst.meetings.addedittoken.AddEditTokenActivity;
 import in.mobifirst.meetings.application.IQStoreApplication;
-//import in.mobifirst.meetings.display.TokenDisplayService;
 import in.mobifirst.meetings.fragment.BaseFragment;
 import in.mobifirst.meetings.model.Token;
 import in.mobifirst.meetings.receiver.TTLocalBroadcastManager;
 import in.mobifirst.meetings.util.NetworkConnectionUtils;
+
+//import in.mobifirst.meetings.display.TokenDisplayService;
 
 public class SnapFragment extends BaseFragment implements TokensContract.View {
 
@@ -252,6 +253,16 @@ public class SnapFragment extends BaseFragment implements TokensContract.View {
 
     @Override
     public void showCantEditTokenMessage() {
+
+    }
+
+    @Override
+    public void showDeletedTokenMessage(boolean b) {
+
+    }
+
+    @Override
+    public void showDeleteConfirmationDialog(Token token, int position) {
 
     }
 

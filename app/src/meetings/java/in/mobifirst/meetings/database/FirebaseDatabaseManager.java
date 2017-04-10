@@ -5,8 +5,11 @@ import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Log;
 
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -273,6 +276,54 @@ public class FirebaseDatabaseManager implements DatabaseManager {
                 });
             }
         });
+    }
+
+    //Move it to token-history table.
+    public void deleteToken(final Token token, final Subscriber<? super Boolean> subscriber) {
+        final TaskCompletionSource<Boolean> taskCompletionSource = new TaskCompletionSource<>();
+        mDatabaseReference
+                .child("/")
+                .child(TOKENS_HISTORY_CHILD)
+                .push()
+                .setValue(token.toMap())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        taskCompletionSource.setResult(true);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        taskCompletionSource.setException(e);
+                    }
+                });
+
+        taskCompletionSource
+                .getTask()
+                .continueWithTask(new Continuation<Boolean, Task<Void>>() {
+                    @Override
+                    public Task<Void> then(@NonNull Task<Boolean> task) throws Exception {
+                        return mDatabaseReference
+                                .child("/")
+                                .child(TOKENS_CHILD)
+                                .child(token.getuId())
+                                .removeValue();
+                    }
+                })
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        subscriber.onNext(true);
+                        subscriber.onCompleted();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        subscriber.onError(e);
+                    }
+                });
     }
 
     public void getTokenById(String tokenId, ValueEventListener valueEventListener) {

@@ -1,7 +1,9 @@
 package in.mobifirst.meetings.tokens;
 
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -9,9 +11,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -300,10 +304,87 @@ public class TokensFragment extends BaseFragment implements TokensContract.View 
         showMessage(getString(R.string.cannot_edit_token));
     }
 
+    @Override
+    public void showDeletedTokenMessage(boolean b) {
+        if (b) {
+            showMessage(getString(R.string.token_deleted));
+        } else {
+            showMessage(getString(R.string.token_deletion_error));
+        }
+    }
+
+
+    @Override
+    public void showDeleteConfirmationDialog(final Token token, final int position) {
+        ConfirmationDialogFragment confirmationDialogFragment = ConfirmationDialogFragment.newInstance(
+                R.string.confirm_delete_meeting);
+        confirmationDialogFragment.setiDeleteActionListener(new ConfirmationDialogFragment.IDeleteActionListener() {
+            @Override
+            public void onDelete(boolean deleteMe) {
+                if (deleteMe) {
+                    mPresenter.deleteToken(token, position, true);
+                } else {
+                    mTokensAdapter.resetSelection(token, position);
+                }
+            }
+        });
+
+        confirmationDialogFragment.show(getFragmentManager(), "dialog");
+    }
+
+    public static class ConfirmationDialogFragment extends DialogFragment {
+        private ConfirmationDialogFragment.IDeleteActionListener iDeleteActionListener;
+
+        interface IDeleteActionListener {
+            void onDelete(boolean deleteMe);
+        }
+
+        public void setiDeleteActionListener(IDeleteActionListener iDeleteActionListener) {
+            this.iDeleteActionListener = iDeleteActionListener;
+        }
+
+        public static ConfirmationDialogFragment newInstance(int title) {
+            ConfirmationDialogFragment frag = new ConfirmationDialogFragment();
+            Bundle args = new Bundle();
+            args.putInt("title", title);
+            frag.setArguments(args);
+            return frag;
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            int title = getArguments().getInt("title");
+
+            return new AlertDialog.Builder(getActivity())
+                    .setIcon(R.mipmap.ic_launcher)
+                    .setTitle(title)
+                    .setPositiveButton(android.R.string.ok,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    iDeleteActionListener.onDelete(true);
+                                }
+                            }
+                    )
+                    .setNegativeButton(android.R.string.no,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    iDeleteActionListener.onDelete(false);
+                                }
+                            }
+                    )
+                    .create();
+        }
+    }
+
     /**
      * Listener for clicks on Tokens in the ListView.
      */
     TokenItemListener mItemListener = new TokenItemListener() {
+        @Override
+        public void onTokenLongClick(Token clickedToken, int position) {
+            mPresenter.deleteToken(clickedToken, position, false);
+        }
+
         @Override
         public void onTokenClick(Token clickedToken) {
             mPresenter.openTokenDetails(clickedToken);
@@ -510,6 +591,8 @@ public class TokensFragment extends BaseFragment implements TokensContract.View 
 
 
     public interface TokenItemListener {
+
+        void onTokenLongClick(Token clickedToken, int position);
 
         void onTokenClick(Token clickedToken);
 

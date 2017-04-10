@@ -368,4 +368,27 @@ final class TokensPresenter implements TokensContract.Presenter {
         return mCurrentCounter;
     }
 
+    @Override
+    public void deleteToken(@NonNull Token token, int position, boolean deleteMe) {
+        if (deleteMe) {
+            mTokensRepository.deleteToken(token, new Subscriber<Boolean>() {
+                @Override
+                public void onCompleted() {
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    mTokensView.showDeletedTokenMessage(false);
+                }
+
+                @Override
+                public void onNext(Boolean aBoolean) {
+                    mTokensView.showDeletedTokenMessage(aBoolean);
+                }
+            });
+        } else {
+            mTokensView.showDeleteConfirmationDialog(token, position);
+        }
+    }
+
 }

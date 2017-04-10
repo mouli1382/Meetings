@@ -50,10 +50,10 @@ public class TokensAdapter extends RecyclerView.Adapter<TokensAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Token token = mTokens.get(position);
 
-
+        holder.mView.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
         if (token.isActive()) {
             holder.mStatusTextView.setText("ACT");
             holder.mStatusTextView.setTextColor(Color.parseColor("#1B5E20"));
@@ -67,7 +67,6 @@ public class TokensAdapter extends RecyclerView.Adapter<TokensAdapter.ViewHolder
             holder.mStatusTextView.setText("SCH");
             holder.mStatusTextView.setTextColor(Color.parseColor("#673AB7"));
         }
-
 
 //        if (token.isActive()) {
 //            holder.mStatusImageButton.setImageResource(R.drawable.ic_alarm_black_24dp);
@@ -106,16 +105,33 @@ public class TokensAdapter extends RecyclerView.Adapter<TokensAdapter.ViewHolder
             }
         });
 
+        holder.mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTokenItemListener.onTokenClick(token);
+            }
+        });
+
         holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                mTokenItemListener.onTokenClick(token);
+                holder.mView.setBackgroundColor(Color.RED);
+                mTokenItemListener.onTokenLongClick(token, position);
                 return true;
             }
         });
 
         holder.mStartTime.setText(TimeUtils.getHourMinute(token.getStartTime()));
         holder.mEndTime.setText(TimeUtils.getHourMinute(token.getEndTime()));
+    }
+
+    public void resetSelection(Token token, int position) {
+        if (position != -1) {
+            Token toDelete = mTokens.get(position);
+            if (toDelete != null && toDelete.equals(token)) {
+                notifyItemChanged(position);
+            }
+        }
     }
 
     @Override

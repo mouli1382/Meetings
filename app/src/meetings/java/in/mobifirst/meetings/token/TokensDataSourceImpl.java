@@ -86,4 +86,9 @@ public class TokensDataSourceImpl implements TokensDataSource {
     @Override
     public void refreshTokens() {
     }
+
+    @Override
+    public void deleteToken(Token token, Subscriber<? super Boolean> subscriber) {
+        mFirebaseDatabaseManager.deleteToken(token, subscriber);
+    }
 }

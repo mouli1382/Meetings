@@ -81,4 +81,9 @@ public class TokensRepository implements TokensDataSource {
     public void refreshTokens() {
 
     }
+
+    @Override
+    public void deleteToken(Token token, Subscriber<? super Boolean> subscriber) {
+        mTokensDataSource.deleteToken(token, subscriber);
+    }
 }

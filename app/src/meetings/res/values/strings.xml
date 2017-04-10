@@ -8,11 +8,11 @@
     <string name="title_activity_credits">Credits</string>
 
     <!-- Remove unused -->
-    <string name="add_token">New Token</string>
+    <string name="add_token">New Meeting</string>
     <string name="edit_token">Edit Meeting</string>
-    <string name="token_marked_complete">token marked complete</string>
-    <string name="token_marked_active">token marked active</string>
-    <string name="token_marked_cancel">token marked cancel</string>
+    <string name="token_marked_complete">Meeting marked complete</string>
+    <string name="token_marked_active">Meeting marked In progress</string>
+    <string name="token_marked_cancel">Meeting marked cancel</string>
     <string name="loading_tokens_error">Error while loading tokens</string>
     <string name="completed_tokens_cleared">Completed tokens cleared</string>
     <string name="menu_filter">Filter</string>
@@ -23,7 +23,7 @@
     <string name="phone_number_hint">Enter customer Phone Number here.</string>
     <string name="counter_number_hint">Enter Counter Number</string>
     <string name="empty_token_message">Token cannot be empty</string>
-    <string name="successfully_saved_token_message">Token created</string>
+    <string name="successfully_saved_token_message">Meeting created</string>
     <string name="list_title">Token List</string>
     <string name="statistics_title">Statistics</string>
     <string name="statistics_no_tokens">You have no tokens.</string>

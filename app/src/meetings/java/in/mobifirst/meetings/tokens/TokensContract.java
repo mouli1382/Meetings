@@ -55,6 +55,10 @@ public interface TokensContract {
         void showFilteringPopUpMenu();
 
         void showCantEditTokenMessage();
+
+        void showDeletedTokenMessage(boolean b);
+
+        void showDeleteConfirmationDialog(Token token, int position);
     }
 
     interface Presenter extends BasePresenter {
@@ -84,5 +88,7 @@ public interface TokensContract {
         void setCounter(int counter);
 
         int getCounter();
+
+        void deleteToken(@NonNull Token token, int position, boolean deleteMe);
     }
 }

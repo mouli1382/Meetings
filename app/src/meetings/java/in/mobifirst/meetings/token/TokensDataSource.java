@@ -34,4 +34,6 @@ public interface TokensDataSource {
     void clearCompletedTokens();
 
     void refreshTokens();
+
+    void deleteToken(Token token, Subscriber<? super Boolean> subscriber);
 }
