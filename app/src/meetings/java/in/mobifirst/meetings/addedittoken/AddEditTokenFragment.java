@@ -119,7 +119,7 @@ public class AddEditTokenFragment extends BaseFragment implements AddEditTokenCo
                     if (validateInput()) {
                         //ToDo hardcoding to IND country code as of now.
                         mPresenter.addNewMeeting(mTitleEditText.getText().toString()
-                                , mDescriptionEditText.getText().toString()
+                                , /*mDescriptionEditText.getText().toString()*/""
                                 , mStartTime, mEndTime);
                     }
                 }
@@ -220,13 +220,13 @@ public class AddEditTokenFragment extends BaseFragment implements AddEditTokenCo
             mTitleInputLayout.setError("");
         }
 
-        CharSequence description = mDescriptionEditText.getText();
-        if (TextUtils.isEmpty(description)) {
-            mDescriptionInputLayout.setError(getString(R.string.invalid_description));
-            return false;
-        } else {
-            mDescriptionInputLayout.setError("");
-        }
+//        CharSequence description = mDescriptionEditText.getText();
+//        if (TextUtils.isEmpty(description)) {
+//            mDescriptionInputLayout.setError(getString(R.string.invalid_description));
+//            return false;
+//        } else {
+//            mDescriptionInputLayout.setError("");
+//        }
 
         if (mStartHour == 0 || mEndHour == 0 || mStartHour > mEndHour) {
             Snackbar.make(getView(), getString(R.string.invalid_hour), Snackbar.LENGTH_LONG).show();

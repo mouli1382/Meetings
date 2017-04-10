@@ -7,10 +7,12 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.commonsware.cwac.preso.PresentationService;
@@ -30,7 +32,7 @@ public class TokenDisplayService extends PresentationService implements
     private MeetingsAdapter mMeetingsAdapter;
     private boolean flipMe = false;
     private LinearLayoutManager mLinearLayoutManager;
-    //    private GridLayoutManager mGridLayoutManager;
+    private TextView mWelcomeTextView;
     private View mRootView;
 
     private BroadcastReceiver mSnapBroadcastReceiver = new BroadcastReceiver() {
@@ -60,13 +62,12 @@ public class TokenDisplayService extends PresentationService implements
     protected View buildPresoView(Context context, LayoutInflater inflater) {
         mRootView = inflater.inflate(R.layout.extended_display, null);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.display_recyclerview);
-//        mGridLayoutManager = new GridLayoutManager(context, 2, LinearLayoutManager.VERTICAL, false);
-//        ItemOffsetDecoration itemDecoration = new ItemOffsetDecoration(context, R.dimen.item_offset);
-//        mRecyclerView.addItemDecoration(itemDecoration);
         mLinearLayoutManager = new LinearLayoutManager(context);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.setAdapter(mMeetingsAdapter);
 
+        mWelcomeTextView = (TextView) mRootView.findViewById(R.id.welcome_text);
+        mWelcomeTextView.setText(Html.fromHtml(getString(R.string.hearty) + "<br><b>" + getString(R.string.welcome_name) + "</b>,<br>"+ getString(R.string.designation)));
 
         //Load the welcome image here
         ImageView welcomeImageView = (ImageView) mRootView.findViewById(R.id.welcome_image);
