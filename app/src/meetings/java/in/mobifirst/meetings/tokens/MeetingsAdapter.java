@@ -93,7 +93,7 @@ public class MeetingsAdapter extends RecyclerView.Adapter<MeetingsAdapter.ViewHo
         }
 
         holder.mTitle.setText(token.getTitle());
-        holder.mDescription.setText(token.getDescription());
+//        holder.mDescription.setText(token.getDescription());
 
         holder.mStartTime.setText(TimeUtils.getHourMinute(token.getStartTime()));
         holder.mEndTime.setText(TimeUtils.getHourMinute(token.getEndTime()));
@@ -130,7 +130,7 @@ public class MeetingsAdapter extends RecyclerView.Adapter<MeetingsAdapter.ViewHo
             super(view);
             mCardView = (CardView) view;
             mTitle = (TextView) view.findViewById(R.id.title);
-            mDescription = (TextView) view.findViewById(R.id.description);
+//            mDescription = (TextView) view.findViewById(R.id.description);
             mStartTime = (TextView) view.findViewById(R.id.startTime);
             mEndTime = (TextView) view.findViewById(R.id.endTime);
 

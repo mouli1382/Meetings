@@ -66,8 +66,8 @@ public class TokenDisplayService extends PresentationService implements
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.setAdapter(mMeetingsAdapter);
 
-        mWelcomeTextView = (TextView) mRootView.findViewById(R.id.welcome_text);
-        mWelcomeTextView.setText(Html.fromHtml(getString(R.string.hearty) + "<br><b>" + getString(R.string.welcome_name) + "</b>,<br>"+ getString(R.string.designation)));
+//        mWelcomeTextView = (TextView) mRootView.findViewById(R.id.welcome_text);
+//        mWelcomeTextView.setText(Html.fromHtml(getString(R.string.hearty) + "<br><b>" + getString(R.string.welcome_name) + "</b>,<br>"+ getString(R.string.designation)));
 
         //Load the welcome image here
         ImageView welcomeImageView = (ImageView) mRootView.findViewById(R.id.welcome_image);

@@ -90,6 +90,7 @@
                     android:layout_below="@+id/title"
                     android:textColor="@color/common_google_signin_btn_text_dark_focused"
                     android:padding="5dp"
+                    android:visibility="gone"
                     android:textStyle="italic"
                     tools:text="Discuss the possibility of deploying TagTree app at various FP shops in Visakhapatnam disctrict." />
 
