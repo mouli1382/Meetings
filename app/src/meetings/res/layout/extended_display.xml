@@ -22,6 +22,7 @@
             android:id="@+id/welcome_image"
             android:layout_width="250dp"
             android:layout_height="200dp"
+            android:padding="2dp"
             android:layout_gravity="center" />
 
         <LinearLayout
@@ -67,6 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/welcome"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
         android:layout_marginBottom="16dp"
         android:text="@string/meetings"
         android:textSize="24sp" />

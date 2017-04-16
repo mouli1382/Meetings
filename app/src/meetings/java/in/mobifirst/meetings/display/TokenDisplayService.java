@@ -72,8 +72,8 @@ public class TokenDisplayService extends PresentationService implements
         //Load the welcome image here
         ImageView welcomeImageView = (ImageView) mRootView.findViewById(R.id.welcome_image);
         Glide.with(getApplicationContext())
-                .load(R.drawable.chandra_babu_naidu)
-                .centerCrop()
+                .load(R.drawable.praveen_kumar)
+                .fitCenter()
                 .into(welcomeImageView);
 
         run();

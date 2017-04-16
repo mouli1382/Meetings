@@ -70,24 +70,24 @@ public class MeetingsAdapter extends RecyclerView.Adapter<MeetingsAdapter.ViewHo
 
         if (token.isActive()) {
             holder.mStatusTextView.setText(R.string.meeting_in_progress);
-//            holder.mCardView.setCardBackgroundColor(Color.parseColor("#1B5E20"));
+            holder.mCardView.setCardBackgroundColor(Color.parseColor("#1B5E20"));
 //            holder.mStatusTextView.setTextColor(mContext.getResources().getColor(android.R.color.holo_green_dark));
             holder.mCardView.setCardElevation(mContext.getResources().getDimension(R.dimen.card_activated_elevation));
-            animateTokenNumber(holder.mStatusTextView);
+//            animateTokenNumber(holder.mStatusTextView);
         } else if (token.isCompleted()) {
             holder.mStatusTextView.setText(R.string.meeting_completed);
-//            holder.mCardView.setCardBackgroundColor(Color.parseColor("#607D8B"));
+            holder.mCardView.setCardBackgroundColor(Color.parseColor("#607D8B"));
 //            holder.mStatusTextView.setTextColor(mContext.getResources().getColor(R.color.colorPrimaryDark));
             holder.mCardView.setCardElevation(mContext.getResources().getDimension(R.dimen.card_completed_elevation));
             holder.mCardView.setEnabled(false);
         } else if (token.isCancelled()) {
             holder.mStatusTextView.setText(R.string.meeting_cancelled);
-//            holder.mCardView.setCardBackgroundColor(Color.parseColor("#EF5350"));
+            holder.mCardView.setCardBackgroundColor(Color.parseColor("#EF5350"));
 //            holder.mStatusTextView.setTextColor(mContext.getResources().getColor(android.R.color.holo_red_dark));
             holder.mCardView.setCardElevation(mContext.getResources().getDimension(R.dimen.card_cancelled_elevation));
         } else {
             holder.mStatusTextView.setText(R.string.meeting_scheduled);
-//            holder.mCardView.setCardBackgroundColor(Color.parseColor("#673AB7"));
+            holder.mCardView.setCardBackgroundColor(Color.parseColor("#673AB7"));
 //            holder.mStatusTextView.setTextColor(mContext.getResources().getColor(R.color.common_google_signin_btn_text_dark_focused));
             holder.mCardView.setCardElevation(mContext.getResources().getDimension(R.dimen.card_scheduled_elevation));
         }

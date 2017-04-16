@@ -30,9 +30,9 @@
     <dimen name="item_offset">10dp</dimen>
 
 
-    <dimen name="card_scheduled_elevation">2dp</dimen>
-    <dimen name="card_cancelled_elevation">1dp</dimen>
+    <dimen name="card_scheduled_elevation">1dp</dimen>
+    <dimen name="card_cancelled_elevation">-1dp</dimen>
     <dimen name="card_completed_elevation">-1dp</dimen>
-    <dimen name="card_activated_elevation">5dp</dimen>
+    <dimen name="card_activated_elevation">2dp</dimen>
 
 </resources>
